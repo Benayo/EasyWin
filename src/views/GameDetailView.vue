@@ -1,42 +1,40 @@
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import MaxWidthWrapper from '@/components/layout/MaxWidthWrapper.vue';
+import AppHeader from '@/components/layout/AppHeader.vue';
+import AddToHomeBanner from '@/components/banners/AddToHomeBanner.vue';
 
-import MaxWidthWrapper from "@/components/layout/MaxWidthWrapper.vue";
-import AppHeader from "@/components/layout/AppHeader.vue";
-import AddToHomeBanner from "@/components/banners/AddToHomeBanner.vue";
 
-import background from "@/assets/game-bg.jpg";
-import gamePoster from "@/assets/luckyworldcupMain.png";
-import prizeTable from "@/assets/prize_img.png";
-import confetti from "@/assets/confetti.png";
-import trophyWin from "@/assets/trophy-win.jpg";
+import background from '@/assets/game-bg.jpg';
+import gamePoster from '@/assets/luckyworldcupMain.png';
+import prizeTable from '@/assets/prize_img.png';
+import confetti from '@/assets/confetti.png';
+import trophyWin from '@/assets/trophy-win.jpg';
 
-import trophy from "@/assets/trophy.png";
-import flag from "@/assets/flag_img.png";
-import hands from "@/assets/hands.png";
-import gloves from "@/assets/gloves.png";
-import ball from "@/assets/ball.png";
-import whistle from "@/assets/whistle.png";
 
-const router = useRouter();
-
-const balance = ref(1500);
-const stake = 500;
-
-const symbols = ref([]);
-const showResult = ref(false);
-const isWin = ref(false);
-const winAmount = ref(0);
-
-const playCounter = ref(0);
-const allowedWins = ref(1);
+import trophy from '@/assets/trophy.png';
+import flag from '@/assets/flag_img.png';
+import hands from '@/assets/hands.png';
+import gloves from '@/assets/gloves.png';
+import ball from '@/assets/ball.png';
+import whistle from '@/assets/whistle.png';
 
 const symbolImages = { trophy, flag, hands, gloves, ball, whistle };
 
-const symbolList = ["trophy", "flag", "hands", "gloves", "ball", "whistle"];
+const router = useRouter();
 
-const prizeValues = {
+
+const balance = ref(1500);
+const stake = 500;
+const gameStarted = ref(false);
+const symbols = ref([]);
+const showResult = ref(false);
+const isWin = ref(false);
+const displayedWin = ref(0);
+const finalWinAmount = ref(0);
+
+const prizes = {
   trophy: 2000,
   flag: 50,
   hands: 10,
@@ -44,75 +42,89 @@ const prizeValues = {
   ball: 2,
   whistle: 1,
 };
+const allSymbols = Object.keys(prizes);
 
-function createBoard() {
-  const board = [];
-  for (let i = 0; i < 9; i++) {
-    const randomIndex = Math.floor(Math.random() * symbolList.length);
-    board.push(symbolList[randomIndex]);
-  }
-  return board;
-}
 
-function countMatches(board) {
-  const count = {};
-  for (let s of board) {
-    count[s] = (count[s] || 0) + 1;
-  }
-  for (let key in count) {
-    if (count[key] >= 3) return key;
-  }
-  return null;
-}
-
-function playTicket() {
+const playTicket = () => {
   if (balance.value < stake) {
-    alert("Not enough balance");
+    alert('Insufficient balance!');
     return;
   }
 
   balance.value -= stake;
-
+  gameStarted.value = true;
   showResult.value = false;
-  winAmount.value = 0;
+  displayedWin.value = 0;
 
-  playCounter.value++;
-  
-  if (playCounter.value > 5) {
-    playCounter.value = 1;
-    allowedWins.value = 1;
+  const willTryWin = Math.random() < 0.15; 
+
+  let winningSymbol = null;
+  if (willTryWin) {
+   
+    const roll = Math.random();
+    if (roll < 0.02) winningSymbol = 'trophy';
+    else if (roll < 0.08) winningSymbol = 'flag'; 
+    else if (roll < 0.2) winningSymbol = 'hands'; 
+    else if (roll < 0.4) winningSymbol = 'gloves'; 
+    else if (roll < 0.6) winningSymbol = 'ball'; 
+    else winningSymbol = 'whistle';
   }
 
-  const board = createBoard();
-  symbols.value = board;
-
-  let match = countMatches(board);
-
-  if (match && allowedWins.value === 0) {
-    match = null;
+  const temp = [];
+  for (let i = 0; i < 9; i++) {
+    if (willTryWin && winningSymbol && i < 3) {
+      temp.push(winningSymbol);
+    } else {
+        
+      const randomIndex = Math.floor(Math.random() * allSymbols.length);
+      temp.push(allSymbols[randomIndex]);
+    }
   }
+
+  symbols.value = temp;
+
+  const counts = {};
+  temp.forEach((s) => (counts[s] = (counts[s] || 0) + 1));
+  const match = Object.entries(counts).find(([_, c]) => c >= 3);
 
   if (match) {
     isWin.value = true;
-    allowedWins.value = 0;
-    winAmount.value = prizeValues[match] * stake;
-    balance.value += winAmount.value;
+    finalWinAmount.value = prizes[match[0]] * stake;
   } else {
     isWin.value = false;
+    finalWinAmount.value = 0;
   }
 
-  showResult.value = true;
-}
+  setTimeout(() => {
+    showResult.value = true;
 
-function closeModal() {
+    if (isWin.value) {
+      let current = 0;
+      const step = finalWinAmount.value / 80;
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= finalWinAmount.value) {
+          displayedWin.value = finalWinAmount.value;
+          balance.value += finalWinAmount.value;
+          clearInterval(timer);
+        } else {
+          displayedWin.value = Math.floor(current);
+        }
+      }, 35);
+    }
+  }, 1600);
+};
+
+
+const closeModal = () => {
   showResult.value = false;
-}
+};
 </script>
-
-
 
 <template>
   <div class="min-h-screen relative overflow-x-hidden text-white">
+    
+
     <MaxWidthWrapper>
       <div class="fixed inset-0 -z-10">
         <img
@@ -154,13 +166,17 @@ function closeModal() {
       </div>
 
       <div class="pb-32 mt-4 border-8 border-white mx-4 md:mx-12">
-        <img :src="gamePoster" alt="Lucky World Cup" class="w-full" />
+        <img
+          :src="gamePoster"
+          alt="Lucky World Cup"
+          class="w-full"
+        />
 
         <div class="mt-6 flex items-start gap-6 px-4">
           <img
             :src="prizeTable"
             alt="Prizes"
-            class="w-48 hidden md:flex flex-shrink-0"
+            class=" w-48 hidden md:flex flex-shrink-0 "
           />
 
           <!-- Game Board -->
@@ -169,13 +185,13 @@ function closeModal() {
           >
             <div class="mb-6 text-center">
               <span
-                class="rounded-full bg-yellow-400 px-2 py-1 text-sm font-semibold text-black shadow-xl"
+                class="rounded-full bg-yellow-400 px-2 py-1 text-sm  font-semibold text-black shadow-xl"
               >
                 ₦500
               </span>
             </div>
 
-            <div class="mx-auto grid max-w-sm grid-cols-3 gap-6">
+            <div class="mx-auto grid max-w-sm grid-cols-3 gap-6 ">
               <div
                 v-for="(symbol, i) in symbols"
                 :key="i"
@@ -189,6 +205,8 @@ function closeModal() {
                 />
               </div>
             </div>
+
+          
           </div>
         </div>
 
@@ -196,7 +214,7 @@ function closeModal() {
         <transition name="modal">
           <div
             v-if="showResult"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 "
           >
             <div class="relative w-full max-w-md my-6">
               <img
