@@ -1,0 +1,124 @@
+﻿// 初始化Firebase
+var firebaseConfig = {
+    apiKey: "AIzaSyDkFgnSdsh1-Vntwclmrv_xynFkdv1lFaw",
+    authDomain: "easywin-nga.firebaseapp.com",
+    databaseURL: "https://easywin-nga.firebaseio.com",
+    projectId: "easywin-nga",
+    storageBucket: "easywin-nga.firebasestorage.app",
+    messagingSenderId: "744287179995",
+    appId: "1:744287179995:web:fe1369ccbbcdbe19b768fe",
+    measurementId: "G-786JX6HW2Z"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+// 初始化消息传递
+const messaging = firebase.messaging();
+
+// 注册Service Worker并处理推送
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        // 注册Service Worker
+        navigator.serviceWorker.register('/ng-sw.js?v=11')
+            .then((registration) => {
+                console.log('ServiceWorker 注册成功: ', registration.scope);
+
+                // 将service worker与Firebase消息传递关联
+                messaging.useServiceWorker(registration);
+
+                // 请求通知权限并获取令牌
+                requestNotificationPermission();
+            })
+            .catch((err) => {
+                console.log('ServiceWorker 注册失败: ', err);
+            });
+    });
+}
+
+// 请求通知权限
+function requestNotificationPermission() {
+    Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+            console.log('通知权限已授予');
+            // 使用VAPID密钥获取令牌
+            messaging.getToken({ vapidKey: 'BFWl0g2SZ_-_MkgqpTW6cdC3OWXj9B2WAGZy8Lo9B6SfhTHXZXkJWImRcZ2WclaXu8hZCtMkfPtt6C3DYeksCMI' })
+                .then(currentToken => {
+                    if (currentToken) {
+                        console.log('获取到推送令牌:', currentToken);
+                        // 将令牌发送到服务器保存
+                        saveTokenToServer(currentToken);
+                    } else {
+                        console.log('无法获取推送令牌，请检查配置');
+                    }
+                })
+                .catch(err => {
+                    console.log('获取令牌时出错:', err);
+                });
+        } else {
+            console.log('用户拒绝了通知权限');
+        }
+    });
+}
+
+function saveTokenToServer(token) {
+    window.localStorage.setItem("push_token", token);
+    //$.post('/PushNotification/SaveSubscription', { token: encodeURIComponent(token) })
+    //    .done(function (result) {
+    //        console.log('令牌已保存到服务器:', result);
+    //    }).fail(function (result) {
+    //        console.log('保存令牌失败:', result);
+    //    });
+}
+
+// 监听前台推送消息
+messaging.onMessage(payload => {
+    console.log('前台收到消息:', payload);
+
+    // 显示自定义通知
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+        body: payload.notification.body,
+        icon: payload.notification.icon || 'https://easywin.ng/images/icon/easywin/192.png',
+        data: { url: payload.notification.data.target_url || 'https://easywin.ng/' }
+    };
+
+    // 显示通知
+    new Notification(notificationTitle, notificationOptions);
+});
+
+// 处理令牌刷新
+messaging.onTokenRefresh(() => {
+    messaging.getToken().then(refreshedToken => {
+        console.log('令牌已刷新:', refreshedToken);
+        saveTokenToServer(refreshedToken);
+    }).catch(err => {
+        console.log('刷新令牌时出错:', err);
+    });
+});
+
+// 处理PWA安装提示
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    // 显示安装按钮
+    const installDiv = document.getElementById("add-to-home");
+    if (installDiv) {
+        installDiv.style.display = 'flex';
+
+        const installButton = document.getElementById('installPwaButton');
+        installButton.addEventListener('click', () => {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('用户接受了安装');
+                } else {
+                    console.log('用户拒绝了安装');
+                }
+                deferredPrompt = null;
+                installDiv.style.display = 'none';
+            });
+        });
+    }
+});

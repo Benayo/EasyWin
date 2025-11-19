@@ -1,0 +1,710 @@
+/* Minification failed. Returning unminified contents.
+(272,38-39): run-time error JS1195: Expected expression: >
+(274,14-15): run-time error JS1195: Expected expression: )
+(350,14-15): run-time error JS1195: Expected expression: )
+(351,9-10): run-time error JS1002: Syntax error: }
+(352,54-55): run-time error JS1004: Expected ';': {
+(357,10-11): run-time error JS1195: Expected expression: ,
+(358,38-39): run-time error JS1004: Expected ';': {
+(381,10-11): run-time error JS1195: Expected expression: ,
+(382,24-25): run-time error JS1195: Expected expression: )
+(382,26-27): run-time error JS1004: Expected ';': {
+(535,10-11): run-time error JS1195: Expected expression: ,
+(536,35-36): run-time error JS1195: Expected expression: )
+(536,37-38): run-time error JS1004: Expected ';': {
+(560,10-11): run-time error JS1195: Expected expression: ,
+(561,58-59): run-time error JS1004: Expected ';': {
+(571,10-11): run-time error JS1195: Expected expression: ,
+(572,50-51): run-time error JS1004: Expected ';': {
+(581,10-11): run-time error JS1195: Expected expression: ,
+(582,41-42): run-time error JS1004: Expected ';': {
+(590,10-11): run-time error JS1195: Expected expression: ,
+(591,45-46): run-time error JS1004: Expected ';': {
+(601,10-11): run-time error JS1195: Expected expression: ,
+(602,94-95): run-time error JS1004: Expected ';': {
+(619,10-11): run-time error JS1195: Expected expression: ,
+(620,24-25): run-time error JS1195: Expected expression: )
+(620,26-27): run-time error JS1004: Expected ';': {
+(642,10-11): run-time error JS1195: Expected expression: ,
+(643,26-27): run-time error JS1195: Expected expression: )
+(643,28-29): run-time error JS1004: Expected ';': {
+(666,5-6): run-time error JS1002: Syntax error: }
+(646,37-43): run-time error JS1018: 'return' statement outside of function: return
+(622,37-43): run-time error JS1018: 'return' statement outside of function: return
+(604,37-43): run-time error JS1018: 'return' statement outside of function: return
+(593,37-43): run-time error JS1018: 'return' statement outside of function: return
+(574,37-43): run-time error JS1018: 'return' statement outside of function: return
+(563,37-43): run-time error JS1018: 'return' statement outside of function: return
+(543,17-23): run-time error JS1018: 'return' statement outside of function: return
+(539,17-23): run-time error JS1018: 'return' statement outside of function: return
+(428,21-27): run-time error JS1018: 'return' statement outside of function: return
+(418,25-31): run-time error JS1018: 'return' statement outside of function: return
+(386,17-23): run-time error JS1018: 'return' statement outside of function: return
+ */
+//-----------------------------------------------------------------------
+// Part of the LINQ to JavaScript (JSLINQ) v2.10 Project - http://jslinq.codeplex.com
+// Copyright (C) 2013 Chris Pietschmann (http://pietschsoft.com). All rights reserved.
+// This project is licensed under the MIT License
+// This license can be found here: http://jslinq.codeplex.com/license
+//-----------------------------------------------------------------------
+(function() {
+    JSLINQ = window.JSLINQ = function(dataItems) {
+        return new JSLINQ.fn.init(dataItems);
+    };
+    JSLINQ.fn = JSLINQ.prototype = {
+        init: function(dataItems) {
+            this.items = dataItems;
+        },
+
+        // The current version of JSLINQ being used
+        jslinq: "2.10",
+
+        ToArray: function() { return this.items; },
+        Where: function(clause) {
+            var item;
+            var newArray = new Array();
+
+            // The clause was passed in as a Method that return a Boolean
+            for (var index = 0; index < this.items.length; index++) {
+                if (clause(this.items[index], index)) {
+                    newArray[newArray.length] = this.items[index];
+                }
+            }
+            return new JSLINQ(newArray);
+        },
+        Select: function(clause) {
+            var item;
+            var newArray = new Array();
+
+            // The clause was passed in as a Method that returns a Value
+            for (var i = 0; i < this.items.length; i++) {
+                if (clause(this.items[i])) {
+                    newArray[newArray.length] = clause(this.items[i]);
+                }
+            }
+            return new JSLINQ(newArray);
+        },
+        OrderBy: function(clause) {
+            var tempArray = new Array();
+            for (var i = 0; i < this.items.length; i++) {
+                tempArray[tempArray.length] = this.items[i];
+            }
+            return new JSLINQ(
+            tempArray.sort(function(a, b) {
+                var x = clause(a);
+                var y = clause(b);
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            })
+        );
+        },
+        OrderByDescending: function(clause) {
+            var tempArray = new Array();
+            for (var i = 0; i < this.items.length; i++) {
+                tempArray[tempArray.length] = this.items[i];
+            }
+            return new JSLINQ(
+            tempArray.sort(function(a, b) {
+                var x = clause(b);
+                var y = clause(a);
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            })
+        );
+        },
+        SelectMany: function(clause) {
+            var r = new Array();
+            for (var i = 0; i < this.items.length; i++) {
+                r = r.concat(clause(this.items[i]));
+            }
+            return new JSLINQ(r);
+        },
+        Count: function(clause) {
+            if (clause == null)
+                return this.items.length;
+            else
+                return this.Where(clause).items.length;
+        },
+        Distinct: function(clause) {
+            var item;
+            var dict = new Object();
+            var retVal = new Array();
+            for (var i = 0; i < this.items.length; i++) {
+                item = clause(this.items[i]);
+                // TODO - This doens't correctly compare Objects. Need to fix this
+                if (dict[item] == null) {
+                    dict[item] = true;
+                    retVal[retVal.length] = item;
+                }
+            }
+            dict = null;
+            return new JSLINQ(retVal);
+        },
+        Any: function(clause) {
+            for (var index = 0; index < this.items.length; index++) {
+                if (clause(this.items[index], index)) { return true; }
+            }
+            return false;
+        },
+        All: function(clause) {
+            for (var index = 0; index < this.items.length; index++) {
+                if (!clause(this.items[index], index)) { return false; }
+            }
+            return true;
+        },
+        Reverse: function() {
+            var retVal = new Array();
+            for (var index = this.items.length - 1; index > -1; index--)
+                retVal[retVal.length] = this.items[index];
+            return new JSLINQ(retVal);
+        },
+        First: function(clause) {
+            if (clause != null) {
+                return this.Where(clause).First();
+            }
+            else {
+                // If no clause was specified, then return the First element in the Array
+                if (this.items.length > 0)
+                    return this.items[0];
+                else
+                    return null;
+            }
+        },
+        Last: function(clause) {
+            if (clause != null) {
+                return this.Where(clause).Last();
+            }
+            else {
+                // If no clause was specified, then return the First element in the Array
+                if (this.items.length > 0)
+                    return this.items[this.items.length - 1];
+                else
+                    return null;
+            }
+        },
+        ElementAt: function(index) {
+            return this.items[index];
+        },
+        Concat: function(array) {
+            var arr = array.items || array;
+            return new JSLINQ(this.items.concat(arr));
+        },
+        Intersect: function(secondArray, clause) {
+            var clauseMethod;
+            if (clause != undefined) {
+                clauseMethod = clause;
+            } else {
+                clauseMethod = function(item, index, item2, index2) { return item == item2; };
+            }
+
+            var sa = secondArray.items || secondArray;
+
+            var result = new Array();
+            for (var a = 0; a < this.items.length; a++) {
+                for (var b = 0; b < sa.length; b++) {
+                    if (clauseMethod(this.items[a], a, sa[b], b)) {
+                        result[result.length] = this.items[a];
+                    }
+                }
+            }
+            return new JSLINQ(result);
+        },
+        DefaultIfEmpty: function(defaultValue) {
+            if (this.items.length == 0) {
+                return defaultValue;
+            }
+            return this;
+        },
+        ElementAtOrDefault: function(index, defaultValue) {
+            if (index >= 0 && index < this.items.length) {
+                return this.items[index];
+            }
+            return defaultValue;
+        },
+        FirstOrDefault: function(defaultValue) {
+            return this.First() || defaultValue;
+        },
+        LastOrDefault: function(defaultValue) {
+            return this.Last() || defaultValue;
+        }
+    };
+    JSLINQ.fn.init.prototype = JSLINQ.fn;
+})();;
+var isGua = false;
+var isDetail = false;
+AfricaLottery = {
+    GuaGuaLe: {
+        config: {
+            lotteryId: "40068",
+            money: "5",
+            moneyIndex: 0,
+            moneyDefine: [],
+            awardTitle: "WINNING NUMBERS",
+            numberTitle: "YOUR NUMBERS",
+            winColor: "blue",
+            winImgW: 50,
+            winImgH: 50,
+            normalColor: "#000",
+            awardsColor: "#333",
+            awardNumbers: [], //开奖号码
+            numbers: [], //彩票号码,
+            myNumbers: [],
+            lineNumber: 3, //每行显示号码个数,
+            canvasId: "canvas",
+            ratio: 1,
+            winImagePosition: [],
+            winTextPosition: [],
+            _ctx: null,
+            _canvas: null,
+            bet_progress: false,
+            time: null,
+            timeInterval: null,
+            passTime: 0,
+            win_amount: 0,
+            win_amount_str: "",
+            lineOffset: 20,
+            isInDetail: false,
+            unit: "",
+            ticket_num: "",
+            devicePixelRatio: 1,
+            pictures: [
+                {
+                    "num": "1",
+                    "img_url": "/images/guagua/luckyworldcup/1.png"
+                },
+                {
+                    "num": "2",
+                    "img_url": "/images/guagua/luckyworldcup/2.png"
+                },
+                {
+                    "num": "3",
+                    "img_url": "/images/guagua/luckyworldcup/3.png"
+                },
+                {
+                    "num": "4",
+                    "img_url": "/images/guagua/luckyworldcup/4.png"
+                },
+                {
+                    "num": "5",
+                    "img_url": "/images/guagua/luckyworldcup/5.png"
+                },
+                {
+                    "num": "6",
+                    "img_url": "/images/guagua/luckyworldcup/6.png"
+                }
+            ],
+            key: "",
+            audio: null,
+            share_content: "",
+            media: [
+                "/media/audio/game/buy.mp3", "/media/audio/game/click.mp3", "/media/audio/game/awarded.mp3",
+                "/media/audio/game/gua.mp3"
+            ]
+        },
+        getPixelRatio: function (context) {
+            var backingStore = context.backingStorePixelRatio ||
+                context.webkitBackingStorePixelRatio ||
+                context.mozBackingStorePixelRatio ||
+                context.msBackingStorePixelRatio ||
+                context.oBackingStorePixelRatio ||
+                context.backingStorePixelRatio || 1;
+
+            return (window.devicePixelRatio || 1) / backingStore;
+        },
+        init: function (isAward) {
+
+            var myfont = new FontFace('myfont', 'url(/font/civicblack.ttf)');
+            myfont.load().then(font => {
+                document.fonts.add(font);
+            }).then(() => {
+
+                var _that = this;
+                var canvas = document.getElementById(_that.config.canvasId);
+                _that.config._canvas = canvas;
+                _that.config.ratio = canvas.width / _that.config.devicePixelRatio / 375;
+                if (!_that.config.audio) {
+                    _that.config.audio = new Audio();
+                }
+                if (!_that.config.audio) {
+                    _that.config.audio = new Audio();
+                }
+                var tempRatio = _that.config.ratio;
+                if (canvas.getContext) {
+                    if (!_that.config._ctx) {
+                        _that.config._ctx = canvas.getContext("2d");
+                    }
+                    _that.config.devicePixelRatio = 1; //_that.getPixelRatio(_that.config._ctx);
+                    _that.config._ctx.clearRect(0, 0, _that.config._canvas.width, _that.config._canvas.height);
+                    if (!_that.config.numbers.length || !_that.config.awardNumbers.length) {
+                        var img = new Image();
+
+                        img.onload = function() {
+                            _that.drawImage(this,
+                                0,
+                                0,
+                                _that.config._canvas.width / _that.config.devicePixelRatio,
+                                _that.config._canvas.height / _that.config.devicePixelRatio);
+                        }
+                        img.src = "/images/guagua/luckyworldcup/yangpiao.png";
+                        return;
+                    }
+
+                    var lines = Math.ceil(_that.config.numbers.length / _that.config.lineNumber);
+                    _that.config._ctx.save();
+                    var start, end, index, columnWidth, columnHeight;
+                    columnWidth =
+                        (_that.config._canvas.width / _that.config.devicePixelRatio) / _that.config.lineNumber;
+                    columnHeight = (_that.config._canvas.height / _that.config.devicePixelRatio) / lines;
+                    var picdiffW = tempRatio < 0.92 ? 53 : 56;
+                    for (var i = 0; i < lines; i++) {
+                        start = i * _that.config.lineNumber;
+                        end = start + _that.config.lineNumber - 1;
+                        index = 0;
+                        for (var j = start; j <= end; j++) {
+                            var x = (index + 0.5) * columnWidth;
+                            var y = (i + 0.5) * columnHeight;
+                            var num = _that.config.numbers[j];
+                            var pic = JSLINQ(_that.config.pictures).First(function(item) {
+                                return item.num === num.text;
+                            });
+                            var image = new Image();
+                            //if (num.is_award && isAward) {
+                            //    image.src = pic.win_img_url;
+                            //} else {
+                                image.src = pic.img_url;
+                            //}
+
+                            _that.drawImages(image, x - picdiffW * tempRatio, y - picdiffW * tempRatio, 56, 56);
+                            if (num.is_award && isAward) {
+                                var winImage = new Image();
+                                winImage.src = "/images/guagua/luckyworldcup/win.png";
+                                _that.drawImages(winImage, x - picdiffW * tempRatio, y - picdiffW * tempRatio, 56, 56);
+                            }
+                            index++;
+                        }
+                    }
+                    if (_that.config.isInDetail) {
+                        showPrizeLevelAndSwitchButton();
+                    }
+                    _that.config._ctx.restore();
+
+                } else {
+                    alert("Your browser not support canvas");
+                }
+
+            });
+        },
+        drawImages: function (img, x, y, imgW, imgH) {
+            var _that = this;
+            img.onload = function() {
+                _that.drawImage(this, x, y, imgW, imgH);
+            }
+        },
+        playSound: function (action) {
+            var _that = this;
+            var index = 0;
+            switch (action) {
+            case "buy":
+                index = 0;
+                break;
+                case "award":
+                    index = 2;
+                    break;
+                case "gua":
+                    index = 3;
+                    break;
+                default:
+                    index = 1;
+                    break;
+            }
+            try {
+                _that.config.audio.src = _that.config.media[index];
+                _that.config.audio.play();
+            } catch (e) {
+
+            }
+        },
+        buy: function () {
+            var _that = this;
+            if (_that.config.bet_progress) {
+                africaDialog.alert.setTitle("Warning").setContent("Operation in progress, please wait").show();
+                return;
+            }
+            $(".prize").removeClass("awarded");
+            africaDialog.loading.show();
+            if (HappyHourConfig.is_need_hand_hour && _that.config.key == "") {
+                $.ajax({
+                    url: GLOBAL_LANGUEAGE + "/games/getHappyHourConfig",
+                    type: "POST",
+                    async: false,
+                    data: { "lottery_id": _that.config.lotteryId },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.status == 1) {
+                            HappyHourConfig.is_open = true;
+                        }
+                    },
+                    error: function () {
+                        africaDialog.loading.hide();
+                    }
+
+                });
+
+                if (!HappyHourConfig.is_hour_page && HappyHourConfig.is_open) {
+                    var key = "scratch_is_popup_{0}".format(_that.config.lotteryId);
+                    var isPopUp = $.cookie(key);
+                    if (!isPopUp) {
+                        africaDialog.confirm.okfunc = function () {
+                            window.location.href = HappyHourConfig.match_url;
+                        };
+                        africaDialog.loading.hide();
+                        africaDialog.confirm.setButtonText(["CANCEL", "GO NOW"]).setContent("Happy Hour Starts!").show();
+                        $.cookie(key, 1, { path: "/", expires: 1 });
+                        return;
+                    }
+                }
+
+                if (HappyHourConfig.is_hour_page && !HappyHourConfig.is_open) {
+                    africaDialog.alert.okfunc = function () {
+                        window.location.href = HappyHourConfig.match_url;
+                    };
+                    africaDialog.loading.hide();
+                    africaDialog.alert.setContent("Happy Hour End!").show();
+                    return;
+                }
+            }
+
+            _that.config.bet_progress = true;
+            var url = GLOBAL_LANGUEAGE+"/games/indentgamebet";
+
+            $.post(url, { "lottery_id": _that.config.lotteryId, "money": _that.config.money,"key":_that.config.key }).done(function (result) {
+                if (result.code == 1) {
+                    _that.playSound("buy");
+                    isFirst = false;
+                    _that.clear();
+                    //_that.disablePlusBtn(false);
+                    $("#betAmount").text(MONEY_FORMAT.format(result.msg.amount.formatMoney(0, "")));
+                    _that.config.awardNumbers = result.msg.awards;
+                    _that.config.numbers = result.msg.numbers;
+                    _that.config.unit = result.msg.unit;
+                    _that.config.win_amount = parseFloat(result.msg.total_win);
+                    _that.config.win_amount_str = result.msg.total_win_str;
+                    _that.config.ticket_num = result.msg.ticket_no;
+                    SHARE_KEY = result.msg.key;
+                    _that.config.share_content = encodeURIComponent(result.msg.share_content + "\n");
+
+                    $(".new_new_btn").removeClass("new_btn_half").css("display", "block");
+                    $(".share_btn_half").hide();
+                    $("#spTicketNo").text(result.msg.ticket_no);
+                    $("#redux").show();
+                    $('#redux').eraser({
+                        size: 30, //设置橡皮擦大小
+                        completeRatio: .8, //设置擦除面积比例,
+                        preRatio: 0,
+                        completeFunction: callBack //大于擦除面积比例触发函数
+                    });
+                    _that.init();
+                    $('#redux').eraser("reset");
+                    $(".gua_con").show();
+                    $(".gua_con1").hide();
+                    $(".new_btn").hide();
+                    $(".check_btn").show();
+                    _that.config.key = "";
+                    if (!isGua) {
+                        _that.config.timeInterval = setInterval(function () {
+                            if (isGua && _that.config.timeInterval) {
+                                _that.config.passTime = 0;
+                                clearInterval(_that.config.timeInterval);
+                                return;
+                            }
+                            _that.config.passTime++;
+                            if (_that.config.passTime >= 1) {
+                                var learnBox = $(".layerbox1");
+                                if (!learnBox.is(":visible")) {
+                                    $(".layerbox1").show();
+                                }
+
+                                //_that.config.time = setTimeout(function () {
+                                //    $(".layerbox1").hide();
+                                //    if (_that.config.passTime >= 30)
+                                //        _that.config.passTime = 0;
+                                //}, 5000);
+                            }
+
+                        }, 1000);
+                    } else {
+                        if (_that.config.timeInterval) {
+                            clearInterval(_that.config.timeInterval);
+                        }
+                        if (_that.config.time) {
+                            clearTimeout(_that.config.time);
+                        }
+                        _that.config.passTime = 0;
+                    }
+
+                    africaDialog.loading.hide();
+                }
+                else if (result.code == -120000) {
+                    window.location.href = result.msg;
+                }
+                else if (result.code == -1) {
+                    africaDialog.loading.hide();
+                    isFirst = true;
+                    africaDialog.confirm.okfunc = function() {
+                        window.location.href = GLOBAL_LANGUEAGE + "/membercenter/deposit";
+                    };
+                    africaDialog.confirm.setContent("The balance is insufficient, please deposit it.").show();
+                } else if (result.code == -2) {
+                    africaDialog.loading.hide();
+                    isFirst = true;
+                    $("#divLogin").show();
+                } else {
+                    africaDialog.loading.hide();
+                    if (_that.config.key != "") {
+                        africaDialog.alert.okfunc = function () {
+                            var url = window.location.href.toString();
+                            window.location.href = url.substring(0, url.indexOf("?"));
+                        }
+                        africaDialog.alert.setContent(result.msg).show();
+
+                    } else {
+                        isFirst = true;
+                        africaDialog.alert.setContent(result.msg).show();
+                    }
+                }
+                _that.config.bet_progress = false;
+            }).fail(function () {
+                africaDialog.loading.hide();
+                _that.config.bet_progress = false;
+            });
+        },
+        drawWinElement: function () {
+            var _that = this;
+            if (!_that.config._ctx) {
+                return;
+            }
+
+            if (!_that.config.winImagePosition.length && !_that.config.winTextPosition.length) {
+                return;
+            }
+
+            for (var i = 0; i < _that.config.winTextPosition.length; i++) {
+                var item = _that.config.winTextPosition[i];
+                _that.config._ctx.clearRect(item.cx, item.cy, item.w, item.h);
+                _that.drawText(item.n, "bold 20px sans-serif", _that.config.winColor, item.x, item.y);
+            }
+
+            var img = new Image();
+            img.onload = function () {
+                for (var i = 0; i < _that.config.winImagePosition.length; i++) {
+                    var pos = _that.config.winImagePosition[i];
+                    _that.drawImage(this, pos.x, pos.y, _that.config.winImgW * _that.config.ratio, _that.config.winImgH * _that.config.ratio);
+                }
+            }
+            img.src = "/images/guagua/win.png";
+        },
+        drawText: function (text, font, fillStyle, x, y) {
+            var _that = this;
+            if (!_that.config._ctx) return;
+            _that.config._ctx.save();
+            _that.config._ctx.font = font;
+            _that.config._ctx.fillStyle = fillStyle;
+            var textLen = _that.config._ctx.measureText(text).width;
+            _that.config._ctx.translate(x, y);
+            _that.config._ctx.fillText(text, -(textLen) / 2, 0);
+            _that.config._ctx.restore();
+        },
+        drawRect: function (x, y, width, height) {
+            var _that = this;
+            if (!_that.config._ctx) return;
+            _that.config._ctx.save();
+            _that.config._ctx.beginPath();
+            _that.config._ctx.fillStyle = "black";
+            _that.config._ctx.moveTo(x, y);
+            _that.config._ctx.fillRect(x, y, width, height);
+            _that.config._ctx.restore();
+        },
+        disablePlusBtn:function(enable) {
+            if (enable) {
+                $(".jia_btn").removeClass("disabled").find("img").attr("src", "/images/guagua/candy_town/jia.png");
+                $(".jian_btn").removeClass("disabled").find("img").attr("src", "/images/guagua/candy_town/jian.png");
+            } else {
+                $(".jia_btn").addClass("disabled").find("img").attr("src", "/images/guagua/candy_town/jia1.png");
+                $(".jian_btn").addClass("disabled").find("img").attr("src", "/images/guagua/candy_town/jian1.png");
+            }
+        },
+        drawImage:function(img, x, y, w, h) {
+            var _that = this;
+            if (!_that.config._ctx) return;
+            _that.config._ctx.save();
+            //_that.config._ctx.globalCompositeOperation = "source-in";
+            _that.config._ctx.translate(x, y);
+            _that.config._ctx.drawImage(img, 0, 0, w, h);
+
+            _that.config._ctx.restore();
+
+        },
+        drawCircle: function (x, y, radius, start, end, isClockWise, fillStyle, strokeStyle) {
+            var _that = this;
+            if (!_that.config._ctx) return;
+            _that.config._ctx.save();
+            _that.config._ctx.translate(x, y);
+            _that.config._ctx.beginPath();
+            _that.config._ctx.arc(0, 0, radius, Math.PI * start, Math.PI * end, isClockWise);
+            if (fillStyle) {
+                _that.config._ctx.fillStyle = fillStyle;
+                _that.config._ctx.fill();
+            }
+
+            if (strokeStyle) {
+                _that.config._ctx.strokeStyle = strokeStyle;
+                _that.config._ctx.stroke();
+            }
+            _that.config._ctx.restore();
+        },
+        clear:function() {
+            var _that = this;
+            if (!_that.config._ctx) return;
+            _that.config._ctx.clearRect(0, 0, _that.config._canvas.width, _that.config._canvas.height);
+            _that.config._canvas = null;
+            _that.config._ctx = null;
+            if (_that.config.time) {
+                clearTimeout(_that.config.time);
+            }
+            _that.config.is_gua = false;
+            _that.config.winImagePosition = [];
+            _that.config.winTextPosition = [];
+            _that.config.time = null;
+            if (_that.config.timeInterval) {
+                clearInterval(_that.config.timeInterval);
+            }
+            _that.config.passTime = 0;
+            _that.config.ticket_num = "";
+            _that.config.win_amount = 0;
+            _that.config.win_amount_str = "";
+
+            //isGua = false;
+        },
+        reset: function () {
+            var _that = this;
+            _that.config.is_gua = false;
+            if (!_that.config._ctx) return;
+            _that.config._ctx.clearRect(0, 0, _that.config._canvas.width, _that.config._canvas.height);
+            _that.config._canvas = null;
+            _that.config._ctx = null;
+            if (_that.config.time) {
+                clearTimeout(_that.config.time);
+            }
+            _that.config.is_gua = false;
+            _that.config.winImagePosition = [];
+            _that.config.winTextPosition = [];
+            _that.config.time = null;
+            if (_that.config.timeInterval) {
+                clearInterval(_that.config.timeInterval);
+            }
+            _that.config.passTime = 0;
+            _that.config.ticket_num = "";
+            _that.config.win_amount = 0;
+            _that.config.win_amount_str = result.msg.total_win_str;
+            //isGua = false;
+        }
+    }
+};;

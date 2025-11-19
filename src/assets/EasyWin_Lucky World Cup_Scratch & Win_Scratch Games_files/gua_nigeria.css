@@ -1,0 +1,261 @@
+﻿
+.blue_diamonds_box{
+    background: url(/images/guagua/nigeria/diamonds/blue/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.red_diamonds_box{
+    background: url(/images/guagua/nigeria/diamonds/red/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.fruit_slots_box{
+    background: url(/images/guagua/nigeria/fruit_card/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.fruit_slots_box_chr{
+    background: url(/images/guagua/nigeria/christmas_gift/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+.red_hot_box{
+    background: url(/images/guagua/nigeria/red_hot/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+.lucky_box{
+    background: url(/images/guagua/nigeria/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+.lucky_palmpay_box {
+    background: url(/images/guagua/nigeria/palmpay/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+.lucky_box_chr{
+    background: url(/images/guagua/nigeria/newyear/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+.fruit_box{
+    background: url(/images/guagua/nigeria/fruit/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+.fruit_box_chr{
+    background: url(/images/guagua/nigeria/merry_christmas/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+.roulette_box{
+    background: url(/images/guagua/nigeria/roulette/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+.star_box{
+    background: url(/images/guagua/nigeria/star/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+/*double*/
+.blue_diamonds_box_double{
+    background: url(/images/guagua/nigeria/double/bgimg_blue.png) no-repeat;
+    background-size: 100% 100%;
+}
+.red_diamonds_box_double{
+    background: url(/images/guagua/nigeria/double/bgimg_red.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.fruit_slots_box_double{
+    background: url(/images/guagua/nigeria/double/bgimg_fruitslots.png) no-repeat;
+    background-size: 100% 100%;
+}
+.fruit_box_double{
+    background: url(/images/guagua/nigeria/double/bgimg_fruit.png) no-repeat;
+    background-size: 100% 100%;
+}
+.lucky_box_double{
+    background: url(/images/guagua/nigeria/double/bgimg_lucky.png) no-repeat;
+    background-size: 100% 100%;
+}
+.roulette_box_double{
+    background: url(/images/guagua/nigeria/double/bgimg_wheel.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.sports_slots_box{
+    background: url(/images/guagua/nigeria/sports_slots/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+.football_night_box{
+    background: url(/images/guagua/nigeria/football_night/bg_img.jpg) no-repeat;
+    background-size: 100% 100%;
+}
+.football_winner_box{
+    background: url(/images/guagua/nigeria/football_winner/bg_img.jpg) no-repeat;
+    background-size: 100% 100%;
+}
+.lucky_football_box{
+    background: url(/images/guagua/nigeria/lucky_football/bg_img.jpg) no-repeat;
+    background-size: 100% 100%;
+}
+
+.tokyo_football_box{
+    background: url(/images/guagua/nigeria/tokyo_football/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+.tokyo_sports_box{
+    background: url(/images/guagua/nigeria/tokyo_sports/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+.tokyo_basketball_box{
+    background: url(/images/guagua/nigeria/tokyo_basketball/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+.tokyo_boxing_box{
+    background: url(/images/guagua/nigeria/tokyo_boxing/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+/*merrychristmas*/
+.new_christmas_box{
+    background: url(/images/guagua/nigeria/christmas/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+/*圣帕特节*/
+.patrickDay_box{
+    background: url(../images/guagua/nigeria/shamrock/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.prize_bg{
+    padding:5px 20px;
+    background: url(../images/guagua/nigeria/shamrock/money_box.png)no-repeat 0 0;
+    background-size: 100% 100%;
+    font-family: markerFont;
+    color:#fcff20;
+    text-shadow: 0 4px 1px #000;
+    -webkit-text-stroke: 1px #000;
+    text-stroke: 1px #000;
+}
+
+@media screen and (max-width: 320px) {
+    /*cash_chance*/
+.gua_box_cash{width:78%;left:11%;}
+.chance_box{background: url(../images/guagua/nigeria/cash_chance/bg_img.png) no-repeat;background-size: 100% 100%;}
+.cash_prize_bg_box{position: absolute;text-align: center;width:80%;top:34%;left:50%;transform:translate(-50%,-34%);-webkit-transform:translate(-50%,-34%);}
+.cash_prize_bg{padding:5px 20px;background: url(../images/guagua/nigeria/cash_chance/money_box.png)no-repeat 0 0; background-size: 100% 100%;font-family: impactFont;color:#c70036;}
+.cash_prize_tit{text-shadow:2px 0 2px #fff,0 2px 2px #fff,-2px 0 2px #fff,0 -2px 2px #fff;font-size:14px;}
+.cash_winNumber_box{position:relative;margin:0 auto;padding:8px 0 3px;width:90%;background:url(../images/guagua/nigeria/cash_chance/win_bg.png) no-repeat center;background-size:100% 100%;color:#2b2b2b;text-align:center;font-family:impactFont;}
+.cash_winNumber_box img{display:block;width:100%;}
+.cash_winNum_con{margin:0 auto;width:70%;}
+.cash_winNumber{display:block;box-sizing:border-box;margin:0 auto;padding:3px 0px;width:70%;max-width:50px;min-width:40px;background:url(../images/guagua/nigeria/cash_chance/num_bg.png) no-repeat;background-size:100% 100%;color:#007c43;font-size:18px;}
+.cash_winNum{color:#b90b34;}
+
+/*fortune_bay*/
+.gua_box_fortune{left:11%;width:78%;}
+.fortune_box{background:url(../images/guagua/nigeria/fortune_bay/bg_img.png) no-repeat;background-size:100% 100%;}
+.fortune_prize_bg_box{position:absolute;top:36%;left:50%;width:80%;text-align:center;-webkit-transform:translate(-50%,-36%);transform:translate(-50%,-36%);}
+.fortune_prize_bg{padding:5px 20px;background:url(../images/guagua/nigeria/fortune_bay/money_box.png) no-repeat 0 0;background-size:100% 100%;color:#fff;font-family:impactFont;}
+.fortune_prize_tit{text-shadow:0 2px 2px #914600;font-size:14px;}
+.fortune_winNumber_box{position:relative;margin:0 auto;padding:8px 0 3px;width:90%;background:url(../images/guagua/nigeria/fortune_bay/win_bg.png) no-repeat center;background-size:100% 100%;color:#2b2b2b;text-align:center;font-family:impactFont;}
+.fortune_winNumber_box img{display:block;width:100%;}
+.fortune_winNum_con{margin:0 auto;width:70%;}
+.fortune_winNumber{display:block;box-sizing:border-box;margin:0 auto;padding:3px 0px;width:70%;max-width:50px;min-width:40px;background:url(../images/guagua/nigeria/fortune_bay/num_bg.png) no-repeat;background-size:100% 100%;color:#5f02d3;font-size:18px;}
+.fortune_winNum{color:#ea3111;}
+
+/*magic_million*/
+.gua_box_magic{left:9%;width:82%;}
+.magic_box{background:url(../images/guagua/nigeria/magic_million/bg_img.png) no-repeat;background-size:100% 100%;}
+.magic_prize_bg_box{position:absolute;top:26%;left:50%;width:80%;text-align:center;-webkit-transform:translate(-50%,-26%);transform:translate(-50%,-26%);}
+.magic_prize_bg{padding:5px 20px;background:url(../images/guagua/nigeria/magic_million/money_box.png) no-repeat 0 0;background-size:100% 100%;color:#ffea00;font-family:impactFont;}
+.magic_prize_tit{text-shadow:2px 0 2px red,0 2px 2px red,-2px 0 2px red,0 -2px 2px red;font-size:14px;}
+.magic_winNumber_box{position:relative;margin:0 auto;padding:8px 0 3px;width:90%;background:url(../images/guagua/nigeria/magic_million/win_bg.png) no-repeat center;background-size:100% 100%;color:#2b2b2b;text-align:center;font-family:impactFont;}
+.magic_winNumber_box img{display:block;width:100%;}
+.magic_winNum_con{margin:0 auto;width:85%;}
+.magic_winNumber{display:block;box-sizing:border-box;margin:0 auto;padding:3px 0px;width:70%;max-width:50px;min-width:40px;background:url(../images/guagua/nigeria/magic_million/num_bg.png) no-repeat;background-size:100% 100%;color:#00000c;font-size:18px;}
+.magic_winNum{color:#5806ed;}
+
+/*圣诞新*/
+.magic_box_new{background:url(/images/guagua/nigeria/magic_christmas/bg_img.png) no-repeat;background-size:100% 100%;}
+.magic_prize_bg_box{position:absolute;top:26%;left:50%;width:80%;text-align:center;-webkit-transform:translate(-50%,-26%);transform:translate(-50%,-26%);}
+.magic_prize_bg{padding:5px 20px;background:url(/images/guagua/nigeria/magic_christmas/money_box.png) no-repeat 0 0;background-size:100% 100%;color:#ffea00;font-family:impactFont;}
+.magic_winNumber_box_new{position:relative;margin:0 auto;padding:8px 0 3px;width:92%;background:url(/images/guagua/nigeria/magic_christmas/win_bg.png) no-repeat center;
+    background-size:100% 100%;color:#2b2b2b;text-align:center;font-family:impactFont;}
+.magic_winNumber_new{display:block;box-sizing:border-box;margin:0 auto;padding:3px 0px;width:70%;max-width:50px;min-width:40px;background:url(/images/guagua/nigeria/magic_christmas/num_bg.png) no-repeat;background-size:100% 100%;color:#fff;font-size:18px;}
+.magic_winNum_new{color:#ffea00;}
+}
+@media (min-width: 321px) {
+/*cash_chance*/
+.gua_box_cash{width:76%;left:12%;}
+.chance_box{background: url(../images/guagua/nigeria/cash_chance/bg_img.png) no-repeat;background-size: 100% 100%;}
+.cash_prize_bg_box{position: absolute;text-align: center;width:80%;top:34%;left:50%;transform:translate(-50%,-34%);-webkit-transform:translate(-50%,-34%);}
+.cash_prize_bg{padding:5px 20px;background: url(../images/guagua/nigeria/cash_chance/money_box.png)no-repeat 0 0; background-size: 100% 100%;font-family: impactFont;color:#c70036;}
+.cash_prize_tit{text-shadow:2px 0 2px #fff,0 2px 2px #fff,-2px 0 2px #fff,0 -2px 2px #fff;font-size:22px;}
+.cash_winNumber_box{position:relative;margin:0 auto;padding:8px 0 3px;width:90%;background:url(../images/guagua/nigeria/cash_chance/win_bg.png) no-repeat center;background-size:100% 100%;color:#2b2b2b;text-align:center;font-family:impactFont;}
+.cash_winNumber_box img{display:block;width:100%;}
+.cash_winNum_con{margin:0 auto;width:70%;}
+.cash_winNumber{display:block;box-sizing:border-box;margin:0 auto;padding:3px 0px;width:70%;max-width:70px;min-width:60px;background:url(../images/guagua/nigeria/cash_chance/num_bg.png) no-repeat;background-size:100% 100%;color:#007c43;font-size:35px;}
+.cash_winNum{color:#b90b34;}
+
+/*fortune_bay*/
+.gua_box_fortune{left:12%;width:76%;}
+.fortune_box{background:url(../images/guagua/nigeria/fortune_bay/bg_img.png) no-repeat;background-size:100% 100%;}
+.fortune_prize_bg_box{position:absolute;top:36%;left:50%;width:80%;text-align:center;-webkit-transform:translate(-50%,-36%);transform:translate(-50%,-36%);}
+.fortune_prize_bg{padding:5px 20px;background:url(../images/guagua/nigeria/fortune_bay/money_box.png) no-repeat 0 0;background-size:100% 100%;color:#fff;font-family:impactFont;}
+.fortune_prize_tit{text-shadow:0 2px 2px #914600;font-size:22px;}
+.fortune_winNumber_box{position:relative;margin:0 auto;padding:8px 0 3px;width:90%;background:url(../images/guagua/nigeria/fortune_bay/win_bg.png) no-repeat center;background-size:100% 100%;color:#2b2b2b;text-align:center;font-family:impactFont;}
+.fortune_winNumber_box img{display:block;width:100%;}
+.fortune_winNum_con{margin:0 auto;width:70%;}
+.fortune_winNumber{display:block;box-sizing:border-box;margin:0 auto;padding:3px 0px;width:70%;max-width:70px;min-width:60px;background:url(../images/guagua/nigeria/fortune_bay/num_bg.png) no-repeat;background-size:100% 100%;color:#5f02d3;font-size:35px;}
+.fortune_winNum{color:#ea3111;}
+
+/*magic_million*/
+.gua_box_magic{left:9%;width:82%;}
+.magic_box{background:url(../images/guagua/nigeria/magic_million/bg_img.png) no-repeat;background-size:100% 100%;}
+.magic_prize_bg_box{position:absolute;top:26%;left:50%;width:80%;text-align:center;-webkit-transform:translate(-50%,-26%);transform:translate(-50%,-26%);}
+.magic_prize_bg{padding:5px 20px;background:url(../images/guagua/nigeria/magic_million/money_box.png) no-repeat 0 0;background-size:100% 100%;color:#ffea00;font-family:impactFont;}
+.magic_prize_tit{text-shadow:2px 0 2px red,0 2px 2px red,-2px 0 2px red,0 -2px 2px red;font-size:22px;}
+.magic_winNumber_box{position:relative;margin:0 auto;padding:8px 0 3px;width:90%;background:url(../images/guagua/nigeria/magic_million/win_bg.png) no-repeat center;background-size:100% 100%;color:#2b2b2b;text-align:center;font-family:impactFont;}
+.magic_winNumber_box img{display:block;width:100%;}
+.magic_winNum_con{margin:0 auto;width:85%;}
+.magic_winNumber{display:block;box-sizing:border-box;margin:0 auto;padding:3px 0px;width:70%;max-width:70px;min-width:60px;background:url(../images/guagua/nigeria/magic_million/num_bg.png) no-repeat;background-size:100% 100%;color:#00000c;font-size:35px;}
+.magic_winNum{color:#5806ed;}
+
+/*圣诞新*/
+.magic_box_new{background:url(/images/guagua/nigeria/magic_christmas/bg_img.png) no-repeat;background-size:100% 100%;}
+.magic_prize_bg_box{position:absolute;top:26%;left:50%;width:80%;text-align:center;-webkit-transform:translate(-50%,-26%);transform:translate(-50%,-26%);}
+.magic_prize_bg{padding:5px 20px;background:url(/images/guagua/nigeria/magic_christmas/money_box.png) no-repeat 0 0;background-size:100% 100%;color:#ffea00;font-family:impactFont;}
+.magic_winNumber_box_new{position:relative;margin:0 auto;padding:8px 0 3px;width:92%;background:url(/images/guagua/nigeria/magic_christmas/win_bg.png) no-repeat center;background-size:100% 100%;color:#2b2b2b;text-align:center;font-family:impactFont;}
+.magic_winNumber_new{display:block;box-sizing:border-box;margin:0 auto;padding:3px 0px;width:70%;max-width:70px;min-width:60px;background:url(/images/guagua/nigeria/magic_christmas/num_bg.png) no-repeat;background-size:100% 100%;color:#fff;font-size:35px;}
+.magic_winNum_new{color:#ffea00;}
+}
+
+.gold_miner_box{background:url(/images/guagua/nigeria/gold_miner/bg_img.png) no-repeat;background-size:100% 100%;}
+.gold_prize_bg_box{position:absolute;top:45%;left:50%;max-width:640px;text-align:center;-webkit-transform:translate(-50%,-45%);transform:translate(-50%,-45%);}
+.gold_prize_bg{padding:10px 20px;background:url(/images/guagua/nigeria/gold_miner/money_box.png) no-repeat 0 0;background-size:100% 100%;color:#ffed54;font-family:goldenFont }
+.gold_prize_tit{font-size:12px;}
+.gold_prize_bonus{font-size:17px;}
+
+.lucky_number_box{background:url(/images/guagua/nigeria/lucky_numbers/bg_img.png) no-repeat;background-size:100% 100%;}
+.lucky_number_prize_bg_box{position:absolute;top:51%;left:50%;max-width:640px;width:38%;text-align:center;-webkit-transform:translate(-50%,-51%);transform:translate(-50%,-51%);}
+.lucky_number_prize_bg{padding:10px 20px 5px;background:url(/images/guagua/nigeria/lucky_numbers/money_box.png) no-repeat 0 0;background-size:100% 100%;color:#fff;text-shadow:1px 0 1px #000,0 1px 1px #000,-1px 0 1px #000,0 -1px 1px #000;}
+.lucky_number_prize_tit{font-size:20px;font-family:saturFont;}
+.lucky_number_prize_bonus{font-size:28px;font-family:saturFont;}
+.gua_lucky_number_box{position: absolute;bottom: 25px;width:80%;left:10%;}
+
+
+.egypt_box{background:url(/images/guagua/nigeria/egypt/bg_img.png) no-repeat;background-size:100% 100%;}
+.egypt_prize_bg_box{position:absolute;top:44%;left:5%;max-width:640px;width:38%;text-align:center;-webkit-transform:translate(-5%,-43%);transform:translate(-5%,-43%);}
+.egypt_prize_bg{padding:10px 20px 15px;background:url(/images/guagua/nigeria/egypt/money_box.png) no-repeat 0 0;background-size:100% 100%;color:#7aff38;text-shadow:1px 0 1px #f28945,0 1px 1px #f28945,-1px 0 1px #f28945,0 -1px 1px #f28945;}
+.egypt_prize_tit{font-size:14px;font-family:gillFont;}
+.egypt_prize_bonus{font-size:20px;font-family:gillFont;}
+.gua_egypt_box{position: absolute;bottom: 7.8%;width:44%;left:28%;}
+
+
+/*lion*/
+.lion_king_box{
+    background: url(/images/guagua/nigeria/lion_king/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+.sound_box{
+    background: url(/images/guagua/nigeria/sound/bg_img.png) no-repeat;
+    background-size: 100% 100%;
+}
+@media (max-width: 1200px) {
+   
+}

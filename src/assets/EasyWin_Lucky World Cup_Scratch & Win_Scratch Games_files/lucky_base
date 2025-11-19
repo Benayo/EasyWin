@@ -1,0 +1,1910 @@
+/* Minification failed. Returning unminified contents.
+(1679,35-36): run-time error JS1195: Expected expression: >
+(1679,62-63): run-time error JS1004: Expected ';': )
+(1762,5-10): run-time error JS1195: Expected expression: class
+(1763,41-42): run-time error JS1004: Expected ';': {
+(1782,29-30): run-time error JS1004: Expected ';': {
+(1785,28-29): run-time error JS1004: Expected ';': {
+(1795,30-31): run-time error JS1004: Expected ';': {
+(1801,26-27): run-time error JS1004: Expected ';': {
+(1803,39-40): run-time error JS1195: Expected expression: >
+(1805,14-15): run-time error JS1195: Expected expression: )
+(1807,22-23): run-time error JS1004: Expected ';': {
+(1825,23-24): run-time error JS1004: Expected ';': {
+(1853,25-26): run-time error JS1004: Expected ';': {
+(1861,25-26): run-time error JS1004: Expected ';': {
+(1865,26-27): run-time error JS1004: Expected ';': {
+(1871,25-26): run-time error JS1004: Expected ';': {
+(1880,5-6): run-time error JS1002: Syntax error: }
+(1851,13-33): run-time error JS1018: 'return' statement outside of function: return posForNewItem
+(1828,17,1831,18): run-time error JS1018: 'return' statement outside of function: return {
+                    top: 0,
+                    left: containerWidth
+                }
+(1793,13-38): run-time error JS1018: 'return' statement outside of function: return this.cycleListener
+ */
+var NEED_FLUSH_BALANCE = false;
+function isClient() {
+    var ua = navigator.userAgent.toLowerCase();
+    if (ua.match(/is258client/i) == "is258client") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+$(document).ajaxStart(function () {
+     africaDialog.loading.show();
+}).ajaxStop(function () {
+    africaDialog.loading.hide();
+});
+
+$(window).on('pageshow', function (event) {
+    africaDialog.loading.hide();
+});
+
+$(document).on("pageshow", function () {
+
+    $(document).on('click', 'a[href]',function (event) {
+        var href = $(this).attr('href');
+        var target = $(this).attr('target');
+
+        if (
+            href == "" ||
+            href.startsWith('#') ||
+            href.startsWith('javascript:') ||
+            (target && target === '_blank' ||
+                href.startsWith('http') ||
+                href.indexOf('behaviour')>-1)
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+        africaDialog.loading.show();
+        setTimeout(function () {
+            window.location.href = href;
+        }, 100);
+    });
+
+    africaDialog.loading.hide();
+    if (isClient()) {
+        $("div[data-role='header']").hide();
+        $("div[data-role='page']").css({ "padding-top": 0 });
+        $(".change_bet_box").hide();
+        $(".footerTextBox").hide();
+        $(".newFooter").hide();
+    }
+
+    if (checkPalmPay()) {
+        $('.palmpay_top').show();
+        $("div[data-role='header']").resize();
+        //if ($(".palmpay_top").size() > 0) {
+        //    let currentPaddingTop = $("div[data-role='page']").css("padding-top");
+        //    let newPaddingTop = currentPaddingTop + $(".palmpay_top").height();
+        //    $("div[data-role='page']").css("padding-top", newPaddingTop + "px");
+        //}
+    }
+
+    var swiper = new Swiper('.main-swiper-container',
+            {
+                slidesPerView: 'auto',
+                loop: true,
+                centeredSlides: false,
+                spaceBetween: 10,
+                pagination: {
+                    el: '.swiper-pagination',
+                },
+                autoplay: {
+                    delay: 5000
+                }
+            });
+});
+
+function FormatDate(now, mask) {
+    var d = typeof now === "string" ? new Date(now) : now;
+    var zeroize = function (value, length) {
+        if (!length) length = 2;
+        value = String(value);
+        for (var i = 0, zeros = ''; i < (length - value.length) ; i++) {
+            zeros += '0';
+        }
+        return zeros + value;
+    };
+
+    return mask.replace(/[^"]*"|'[^']*'|\b(?:d{1,4}|m{1,4}|M{1,4}|yy(?:yy)?|([hHMstT])\1?|[lLZ])\b/g, function ($0) {
+        switch ($0) {
+            case 'd': return d.getDate();
+            case 'dd': return zeroize(d.getDate());
+            case 'ddd': return ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'][d.getDay()];
+            case 'dddd': return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDay()];
+            case 'M': return d.getMonth() + 1;
+            case 'MM': return zeroize(d.getMonth() + 1);
+            case 'MMM': return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()];
+            case 'MMMM': return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][d.getMonth()];
+            case 'yy': return String(d.getFullYear()).substr(2);
+            case 'yyyy': return d.getFullYear();
+            case 'h': return d.getHours() % 12 || 12;
+            case 'hh': return zeroize(d.getHours() % 12 || 12);
+            case 'H': return d.getHours();
+            case 'HH': return zeroize(d.getHours());
+            case 'm': return d.getMinutes();
+            case 'mm': return zeroize(d.getMinutes());
+            case 's': return d.getSeconds();
+            case 'ss': return zeroize(d.getSeconds());
+            case 'l': return zeroize(d.getMilliseconds(), 3);
+            case 'L': var m = d.getMilliseconds();
+                if (m > 99) m = Math.round(m / 10);
+                return zeroize(m);
+            case 'tt': return d.getHours() < 12 ? 'am' : 'pm';
+            case 'TT': return d.getHours() < 12 ? 'AM' : 'PM';
+            case 'Z': return d.toUTCString().match(/[A-Z]+$/);
+                // Return quoted strings with the surrounding quotes removed
+            default: return $0.substr(1, $0.length - 2);
+        }
+    });
+};
+
+
+
+/**
+  * 格式化金额
+  * @param  {[type]} v     [要转换的数字]
+  * @param  {[type]} len   [小数点位数,默认2位]
+  * @param  {[type]} split [分隔符,默认',']
+  * @author 279241400@qq.com hyl
+  * @time 2016年6月16日 11:32:24
+  * @return {[type]}       [返回转换完的字符串]
+  */
+function fmoney(v, len, split) {
+    split = split || ",", len = Math.abs((+len) % 20 || 0);
+    v = parseFloat((v + "").replace(/[^\d\.-]/g, "")).toFixed(len) + "";
+    return v.replace(/\d+/, function (v) {
+        var lit = v.length % 3 == 0;
+        var index = lit ? v.length - 3 : -1;
+        return v.split('').reverse().join('').replace(/\d{3}/g, function (k, l) {
+            return k + ((l == index && lit) ? "" : split);
+        }).split('').reverse().join('');
+    }
+    );
+}
+
+function getScriptSrcByLang(src, lang) {
+    src = src.replace(".js", "");
+    var curLang = lang;
+    if (lang === "") {
+        curLang = (navigator.language || navigator.browserLanguage).toLowerCase();
+    }
+    if (curLang.indexOf('zh') >= 0) {
+        return src + ".js";
+    } else {
+        return src + ".en-us.js";
+    }
+}
+
+
+$.fn.showFlex = function () {
+    return this.css('display', 'flex');
+};
+
+String.prototype.format = function () {
+    var args = arguments;
+    return this.replace(/\{(\d+)\}/g,
+        function (m, i) {
+            return args[i];
+        });
+};
+
+String.prototype.replaceAll = function (old, news) {
+    return this.replace(new RegExp(old, "gm"), news);
+};
+
+String.prototype.lpad = function (padChar) {
+    if (parseInt(this, 10) < 10) {
+        return padChar + this;
+    }
+    return this;
+};
+
+///集合取交集
+Array.intersect = function () {
+    var result = new Array();
+    var obj = {};
+    for (var i = 0; i < arguments.length; i++) {
+        for (var j = 0; j < arguments[i].length; j++) {
+            var str = arguments[i][j];
+            if (!obj[str]) {
+                obj[str] = 1;
+            } else {
+                obj[str]++;
+                if (obj[str] == arguments.length) {
+                    result.push(str);
+                }
+            } //end else
+        } //end for j
+    } //end for i
+    return result;
+};
+
+//集合去掉重复
+Array.prototype.uniquelize = function () {
+    var tmp = {},
+        ret = [];
+    for (var i = 0, j = this.length; i < j; i++) {
+        if (!tmp[this[i]]) {
+            tmp[this[i]] = 1;
+            ret.push(this[i]);
+        }
+    }
+
+    return ret;
+};
+//并集
+Array.union = function () {
+    var arr = new Array();
+    var obj = {};
+    for (var i = 0; i < arguments.length; i++) {
+        for (var j = 0; j < arguments[i].length; j++) {
+            var str = arguments[i][j];
+            if (!obj[str]) {
+                obj[str] = 1;
+                arr.push(str);
+            }
+        } //end for j
+    } //end for i
+    return arr;
+};
+
+//2个集合的差集 在arr不存在
+Array.prototype.minus = function (arr) {
+    var result = new Array();
+    var obj = {};
+    for (var i = 0; i < arr.length; i++) {
+        obj[arr[i]] = 1;
+    }
+    for (var j = 0; j < this.length; j++) {
+        if (!obj[this[j]]) {
+            obj[this[j]] = 1;
+            result.push(this[j]);
+        }
+    }
+    return result;
+};
+
+Array.prototype.insert = function (index, value, insert) {
+    this.splice(index, insert ? 0 : 1, value);
+}
+
+
+Number.prototype.formatMoney = function (places, symbol, thousand, decimal) {
+    places = !isNaN(places = Math.abs(places)) ? places : 2;
+    symbol = symbol !== undefined ? symbol : "$";
+    thousand = thousand || ",";
+    decimal = decimal || ".";
+    var number = this,
+        negative = number < 0 ? "-" : "",
+        i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
+        j = (j = i.length) > 3 ? j % 3 : 0;
+    return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
+};
+
+
+function setPosition(id, pos) {
+    var divId = id || "divLogin";
+    var apos = pos || "center";
+    divId = "#" + divId;
+    setPositionBySelector(divId, apos);
+}
+
+function setPositionBySelector(selector, pos) {
+    var apos = pos || "center";
+
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+    var scrolltop = $(document).scrollTop();
+    var divWidth = $(selector).width();
+    var divHeight = $(selector).height();
+    var objLeft;
+    var objTop;
+    if (apos == "center") {
+        objLeft = (windowWidth - divWidth) / 2;
+        objTop = (windowHeight - divHeight) / 2 - 15;
+    } else {
+        objLeft = windowWidth - divWidth - 5;
+        objTop = (windowHeight - divHeight) / 2 - 15;
+    }
+
+    $(selector).css({
+        position: "fixed",
+        left: objLeft + "px",
+        top: objTop + "px"
+    });
+}
+//全角转半角
+function ToDBC(str) {
+    if (str != null && str.length > 0) {
+        var tmp = "";
+        for (var i = 0; i < str.length; i++) {
+            if (str.charCodeAt(i) > 65248 && str.charCodeAt(i) < 65375) {
+                tmp += String.fromCharCode(str.charCodeAt(i) - 65248);
+            }
+            else {
+                tmp += String.fromCharCode(str.charCodeAt(i));
+            }
+        }
+        return tmp;
+    }
+    return str;
+}
+
+
+function jsonSort(array, field, reverse) {
+    // 数组长度小于2 或 没有指定排序字段 或 不是json格式数据
+    if (array.length < 2 || !field || typeof array[0] !== "object") return array;
+    // 数字类型排序
+    if (typeof array[0][field] === "number") {
+        array.sort(function (x, y) { return x[field] - y[field] });
+    }
+    // 字符串类型排序
+    if (typeof array[0][field] === "string") {
+        array.sort(function (x, y) { return x[field].localeCompare(y[field]) });
+    }
+    // 判断是否需要倒序
+    if (reverse) {
+        array.reverse();
+    }
+    return array;
+}
+
+function checkPalmPay() {
+    if (window.palmpay) {
+        return true;
+    }
+    if (window.webkit) {
+        if (window.webkit.messageHandlers.palmPay) {
+            return true;
+        }
+        return false;
+    }
+    return false;
+};
+(function rotate() {
+    var orientation = window.orientation;
+    var pd = null;
+    function createPd() {
+        if (document.getElementById('preventTran') === null) {
+            var imgData = 'data:image/png;base64,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';
+            pd = document.createElement('div');
+            pd.setAttribute('id', 'preventTran');
+            pd.style.position = 'fixed';
+            pd.style.left = '0';
+            pd.style.top = '0';
+            pd.style.width = '100%';
+            pd.style.height = '100%';
+            pd.style.overflow = 'hidden';
+            pd.style.backgroundColor = '#2e2e2e';
+            pd.style.textAlign = 'center';
+            pd.style.zIndex = '99999';
+            document.getElementsByTagName('body')[0].appendChild(pd);
+            var img = document.createElement('img');
+            img.src = imgData;
+            pd.appendChild(img);
+            img.style.margin = '60px auto 30px';
+            var br = document.createElement('br');
+            var p = document.createElement('p');
+            p.style.width = '100%';
+            p.style.height = 'auto';
+            p.style.fontSize = '22px';
+            p.style.color = '#626262';
+            p.style.lineHeight = '34px';
+            p.style.textAlign = 'center';
+            p.innerHTML = 'For your good experience';
+            p.appendChild(br);
+            p.innerHTML += 'Please hold the phone/pad portrait';
+            pd.appendChild(p);
+        }
+    }
+    if (orientation == 90 || orientation == -90) {
+        if (pd == null && document.getElementById('preventTran') === null) createPd();
+        document.getElementById('preventTran').style.display = 'block';
+    }
+    window.onorientationchange = function () {
+        if (pd == null && document.getElementById('preventTran') == null) createPd();
+        document.getElementById('preventTran').style.display = 'none';
+        rotate();
+    };
+})();;
+/*
+* jQuery.eraser v0.4.2
+* makes any image or canvas erasable by the user, using touch or mouse input
+* https://github.com/boblemarin/jQuery.eraser
+*
+* Usage:
+*
+* $('#myImage').eraser(); // simple way
+*
+* $(#canvas').eraser( {
+*   size: 20, // define brush size (default value is 40)
+*   completeRatio: .65, // allows to call function when a erased ratio is reached (between 0 and 1, default is .7 )
+*   completeFunction: myFunction // callback function when complete ratio is reached
+* } );
+*
+* $('#image').eraser( 'clear' ); // erases all canvas content
+*
+* $('#image').eraser( 'reset' ); // revert back to original content
+*
+* $('#image').eraser( 'size', 80 ); // change the eraser size
+*
+*
+* https://github.com/boblemarin/jQuery.eraser
+* http://minimal.be/lab/jQuery.eraser/
+*
+* Copyright (c) 2010 boblemarin emeric@minimal.be http://www.minimal.be
+*
+* Permission is hereby granted, free of charge, to any person
+* obtaining a copy of this software and associated documentation
+* files (the "Software"), to deal in the Software without
+* restriction, including without limitation the rights to use,
+* copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following
+* conditions:
+*
+* The above copyright notice and this permission notice shall be
+* included in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+* OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+* NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+* HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+* WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+* FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+(function( $ ){
+    var methods = {
+        init: function (options) {
+            var that = this;
+            function getPixelRatio(context) {
+                var backingStore = context.backingStorePixelRatio ||
+                    context.webkitBackingStorePixelRatio ||
+                    context.mozBackingStorePixelRatio ||
+                    context.msBackingStorePixelRatio ||
+                    context.oBackingStorePixelRatio ||
+                    context.backingStorePixelRatio || 1;
+
+                return (window.devicePixelRatio || 1) / backingStore;
+            };
+			return this.each(function(){
+				var $this = $(this),
+					data = $this.data('eraser');
+
+				if (!data) {
+                    var width = $this.width(),
+                        height = $this.height(),
+                        pos = $this.offset(),
+                        $canvas = $("<canvas width='" +
+                            width +
+                            "px' height='" +
+                            height +
+                            "px' data-img='" +
+                            this.src +
+                            "' data-scrape='true'/>"),
+                        canvas = $canvas.get(0),
+                        size = (options && options.size) ? options.size : 40,
+                        canScrape = options.canScrape;
+                    completeRatio = (options && options.completeRatio) ? options.completeRatio : .7,
+                        completeFunction = (options && options.completeFunction) ? options.completeFunction : null,
+                        parts = [],
+                        preRatio = (options && options.preRatio) ? options.preRatio : 0,
+                        colParts = Math.floor(width / size),
+                        numParts = colParts * Math.floor(height / size),
+                        n = numParts,
+                        ctx = canvas.getContext("2d"),
+                        devicePixelRatio = getPixelRatio(ctx);
+                    // replace target with canvas
+                    $this.after($canvas);
+                    canvas.id = this.id;
+                    canvas.className = this.className;
+                    $canvas.css({ "width": width + "px", "height": height + "px" });
+                    ctx.drawImage(this, 0, 0, width, height);
+                    $this.remove();
+
+                    // prepare context for drawing operations
+                    ctx.globalCompositeOperation = "destination-out";
+                    ctx.strokeStyle = 'rgba(255,0,0,255)';
+                    ctx.lineWidth = size;
+
+                    ctx.lineCap = "round";
+                    // bind events
+                    $canvas.bind('mousedown.eraser', methods.mouseDown);
+                    $canvas.bind('touchstart.eraser', methods.touchStart);
+                    $canvas.bind('touchmove.eraser', methods.touchMove);
+                    $canvas.bind('touchend.eraser', methods.touchEnd);
+
+                    // reset parts
+                    while (n--) parts.push(1);
+
+                    // store values
+                    data = {
+                        posX: pos.left,
+                        posY: pos.top,
+                        touchDown: false,
+                        touchID: -999,
+                        touchX: 0,
+                        touchY: 0,
+                        ptouchX: 0,
+                        ptouchY: 0,
+                        canvas: $canvas,
+                        ctx: ctx,
+                        w: width,
+                        h: height,
+                        source: this,
+                        size: size,
+                        parts: parts,
+                        colParts: colParts,
+                        numParts: numParts,
+                        ratio: 0,
+                        preRatio: preRatio,
+                        complete: false,
+                        canScrape: canScrape,
+                        completeRatio: completeRatio,
+                        completeFunction: completeFunction
+                    };
+                    $canvas.data('eraser', data);
+
+                    // listen for resize event to update offset values
+                    $(window).resize(function() {
+                        var pos = $canvas.offset();
+                        data.posX = pos.left;
+                        data.posY = pos.top;
+                        //data.canvas = $("#")
+                    });
+                } else {
+                    data.canScrape = options.canScrape;
+                }
+			});
+        },
+        touchStart: function (event) {
+            var $this = $(this),
+				data = $this.data('eraser');
+
+            if (!data.canScrape) return false;
+
+			if (!data.touchDown) {
+                AfricaLottery.GuaGuaLe.config.audio.src = AfricaLottery.GuaGuaLe.config.media[3];
+				var t = event.originalEvent.changedTouches[0],
+					tx = t.pageX - data.posX,
+					ty = t.pageY - data.posY;
+				methods.evaluatePoint( data, tx, ty );
+				data.touchDown = true;
+				data.touchID = t.identifier;
+				data.touchX = tx;
+				data.touchY = ty;
+				event.preventDefault();
+			}
+        },
+        touchMove: function( event ) {
+			var $this = $(this),
+				data = $this.data('eraser');
+
+			if (!data.canScrape) return false;
+
+			if (data.touchDown) {
+			    AfricaLottery.GuaGuaLe.config.audio.play();
+			    //AfricaLottery.GuaGuaLe.playSound("gua");
+				var ta = event.originalEvent.changedTouches,
+					n = ta.length;
+				while( n-- )
+					if ( ta[n].identifier == data.touchID ) {
+						var tx = ta[n].pageX - data.posX,
+							ty = ta[n].pageY - data.posY;
+						methods.evaluatePoint( data, tx, ty );
+						data.ctx.beginPath();
+						data.ctx.moveTo( data.touchX, data.touchY );
+						data.touchX = tx;
+						data.touchY = ty;
+						data.ctx.lineTo( data.touchX, data.touchY );
+						data.ctx.stroke();
+						event.preventDefault();
+						break;
+					}
+			}
+		},
+		touchEnd: function( event ) {
+			var $this = $(this),
+				data = $this.data('eraser');
+
+			if (!data.canScrape) return false;
+			if (AfricaLottery.GuaGuaLe.config.audio.src.indexOf(AfricaLottery.GuaGuaLe.config.media[3])>-1) {
+			    AfricaLottery.GuaGuaLe.config.audio.pause();
+			}
+			if ( data.touchDown ) {
+				var ta = event.originalEvent.changedTouches,
+					n = ta.length;
+				while( n-- )
+					if ( ta[n].identifier == data.touchID ) {
+						data.touchDown = false;
+						event.preventDefault();
+						break;
+					}
+			}
+		},
+
+		evaluatePoint: function (data, tx, ty) {
+
+		    if (!isGua) {
+                isGua = true;
+		    }
+           // console.log(isGua);
+			var p = Math.floor(tx/data.size) + Math.floor( ty / data.size ) * data.colParts;
+			if ( p >= 0 && p < data.numParts ) {
+				data.ratio += data.parts[p];
+				data.parts[p] = 0;
+				if (!data.complete) {
+				    var rat = data.ratio / data.numParts;
+				    if (rat < 0.1) {
+				        //alert('ssss');
+				        //检查该卡有没有付款，没付款需要用户付款才能刮
+				        //console.log("ratio:" + data.ratio + ",preRatio:" + data.preRatio + ",numParts:" + data.numParts + ",complete:" + data.ratio / data.numParts);
+				    }
+                    
+				   if (data.ratio / data.numParts >= data.completeRatio - data.preRatio) {
+						data.complete = true;
+						if (data.completeFunction != null) data.completeFunction();
+                        data.ctx.clearRect(0, 0, data.w, data.h);
+						this.clear();
+					}
+				}
+			}
+
+		},
+
+		mouseDown: function( event ) {
+			var $this = $(this),
+				data = $this.data('eraser'),
+				tx = event.pageX - data.posX,
+				ty = event.pageY - data.posY;
+			if (!data.canScrape) return false;
+			methods.evaluatePoint( data, tx, ty );
+			data.touchDown = true;
+			data.touchX = tx;
+			data.touchY = ty;
+			data.ctx.beginPath();
+			data.ctx.moveTo( data.touchX-1, data.touchY );
+			data.ctx.lineTo( data.touchX, data.touchY );
+			data.ctx.stroke();
+			$this.bind('mousemove.eraser', methods.mouseMove);
+			$(document).bind('mouseup.eraser', data, methods.mouseUp);
+			event.preventDefault();
+		},
+
+		mouseMove: function( event ) {
+			var $this = $(this),
+				data = $this.data('eraser'),
+				tx = event.pageX - data.posX,
+				ty = event.pageY - data.posY;
+			if (!data.canScrape) return false;
+			methods.evaluatePoint( data, tx, ty );
+			data.ctx.beginPath();
+			data.ctx.moveTo( data.touchX, data.touchY );
+			data.touchX = tx;
+			data.touchY = ty;
+			data.ctx.lineTo( data.touchX, data.touchY );
+			data.ctx.stroke();
+			event.preventDefault();
+		},
+
+		mouseUp: function( event ) {
+			var data = event.data,
+				$this = data.canvas;
+			if (!data.canScrape) return false;
+			data.touchDown = false;
+			$this.unbind('mousemove.eraser');
+			$(document).unbind('mouseup.eraser');
+			event.preventDefault();
+		},
+        clear: function() {
+			var $this = $(this),
+				data = $this.data('eraser');
+            if ( data )
+			{
+
+			    data.ctx.clearRect(0, 0, data.w, data.h);
+                var n = data.numParts;
+				while( n-- ) data.parts[n] = 0;
+				data.ratio = data.numParts;
+				data.complete = true;
+                data.canScrape = true;
+               if (data.completeFunction != null) data.completeFunction();
+            }
+        },
+        size: function(value) {
+			var $this = $(this),
+				data = $this.data('eraser');
+			if ( data && value )
+			{
+				data.size = value;
+				data.ctx.lineWidth = value;
+			}
+		},
+
+		reset: function() {
+			var $this = $(this),
+				data = $this.data('eraser');
+			if ( data ) {
+                data.ctx.globalCompositeOperation = "source-over";
+                data.ctx.drawImage( data.source, 0, 0, data.w, data.h );
+				data.ctx.globalCompositeOperation = "destination-out";
+				var n = data.numParts;
+				while( n-- ) data.parts[n] = 1;
+				data.ratio = 0;
+				data.complete = false;
+                data.canScrape = true;
+            }
+		}
+
+	};
+
+	$.fn.eraser = function( method ) {
+		if ( methods[method] ) {
+			return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+		} else if ( typeof method === 'object' || ! method ) {
+			return methods.init.apply( this, arguments );
+		} else {
+			$.error( 'Method ' +  method + ' does not yet exist on jQuery.eraser' );
+		}
+	};
+})( jQuery );;
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+    typeof define === 'function' && define.amd ? define(['exports'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.countUp = {}));
+})(this, (function (exports) { 'use strict';
+
+    var __assign = (undefined && undefined.__assign) || function () {
+        __assign = Object.assign || function(t) {
+            for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                    t[p] = s[p];
+            }
+            return t;
+        };
+        return __assign.apply(this, arguments);
+    };
+    // playground: stackblitz.com/edit/countup-typescript
+    var CountUp = /** @class */ (function () {
+        function CountUp(target, endVal, options) {
+            var _this = this;
+            this.target = target;
+            this.endVal = endVal;
+            this.options = options;
+            this.version = '2.0.8';
+            this.defaults = {
+                startVal: 0,
+                decimalPlaces: 0,
+                duration: 2,
+                useEasing: true,
+                useGrouping: true,
+                smartEasingThreshold: 999,
+                smartEasingAmount: 333,
+                separator: ',',
+                decimal: '.',
+                prefix: '',
+                suffix: ''
+            };
+            this.finalEndVal = null; // for smart easing
+            this.useEasing = true;
+            this.countDown = false;
+            this.error = '';
+            this.startVal = 0;
+            this.paused = true;
+            this.count = function (timestamp) {
+                if (!_this.startTime) {
+                    _this.startTime = timestamp;
+                }
+                var progress = timestamp - _this.startTime;
+                _this.remaining = _this.duration - progress;
+                // to ease or not to ease
+                if (_this.useEasing) {
+                    if (_this.countDown) {
+                        _this.frameVal = _this.startVal - _this.easingFn(progress, 0, _this.startVal - _this.endVal, _this.duration);
+                    }
+                    else {
+                        _this.frameVal = _this.easingFn(progress, _this.startVal, _this.endVal - _this.startVal, _this.duration);
+                    }
+                }
+                else {
+                    if (_this.countDown) {
+                        _this.frameVal = _this.startVal - ((_this.startVal - _this.endVal) * (progress / _this.duration));
+                    }
+                    else {
+                        _this.frameVal = _this.startVal + (_this.endVal - _this.startVal) * (progress / _this.duration);
+                    }
+                }
+                // don't go past endVal since progress can exceed duration in the last frame
+                if (_this.countDown) {
+                    _this.frameVal = (_this.frameVal < _this.endVal) ? _this.endVal : _this.frameVal;
+                }
+                else {
+                    _this.frameVal = (_this.frameVal > _this.endVal) ? _this.endVal : _this.frameVal;
+                }
+                // decimal
+                _this.frameVal = Number(_this.frameVal.toFixed(_this.options.decimalPlaces));
+                // format and print value
+                _this.printValue(_this.frameVal);
+                // whether to continue
+                if (progress < _this.duration) {
+                    _this.rAF = requestAnimationFrame(_this.count);
+                }
+                else if (_this.finalEndVal !== null) {
+                    // smart easing
+                    _this.update(_this.finalEndVal);
+                }
+                else {
+                    if (_this.callback) {
+                        _this.callback();
+                    }
+                }
+            };
+            // default format and easing functions
+            this.formatNumber = function (num) {
+                var neg = (num < 0) ? '-' : '';
+                var result, x1, x2, x3;
+                result = Math.abs(num).toFixed(_this.options.decimalPlaces);
+                result += '';
+                var x = result.split('.');
+                x1 = x[0];
+                x2 = x.length > 1 ? _this.options.decimal + x[1] : '';
+                if (_this.options.useGrouping) {
+                    x3 = '';
+                    for (var i = 0, len = x1.length; i < len; ++i) {
+                        if (i !== 0 && (i % 3) === 0) {
+                            x3 = _this.options.separator + x3;
+                        }
+                        x3 = x1[len - i - 1] + x3;
+                    }
+                    x1 = x3;
+                }
+                // optional numeral substitution
+                if (_this.options.numerals && _this.options.numerals.length) {
+                    x1 = x1.replace(/[0-9]/g, function (w) { return _this.options.numerals[+w]; });
+                    x2 = x2.replace(/[0-9]/g, function (w) { return _this.options.numerals[+w]; });
+                }
+                return neg + _this.options.prefix + x1 + x2 + _this.options.suffix;
+            };
+            this.easeOutExpo = function (t, b, c, d) {
+                return c * (-Math.pow(2, -10 * t / d) + 1) * 1024 / 1023 + b;
+            };
+            this.options = __assign(__assign({}, this.defaults), options);
+            this.formattingFn = (this.options.formattingFn) ?
+                this.options.formattingFn : this.formatNumber;
+            this.easingFn = (this.options.easingFn) ?
+                this.options.easingFn : this.easeOutExpo;
+            this.startVal = this.validateValue(this.options.startVal);
+            this.frameVal = this.startVal;
+            this.endVal = this.validateValue(endVal);
+            this.options.decimalPlaces = Math.max(this.options.decimalPlaces);
+            this.resetDuration();
+            this.options.separator = String(this.options.separator);
+            this.useEasing = this.options.useEasing;
+            if (this.options.separator === '') {
+                this.options.useGrouping = false;
+            }
+            this.el = (typeof target === 'string') ? document.getElementById(target) : target;
+            if (this.el) {
+                this.printValue(this.startVal);
+            }
+            else {
+                this.error = '[CountUp] target is null or undefined';
+            }
+        }
+        // determines where easing starts and whether to count down or up
+        CountUp.prototype.determineDirectionAndSmartEasing = function () {
+            var end = (this.finalEndVal) ? this.finalEndVal : this.endVal;
+            this.countDown = (this.startVal > end);
+            var animateAmount = end - this.startVal;
+            if (Math.abs(animateAmount) > this.options.smartEasingThreshold) {
+                this.finalEndVal = end;
+                var up = (this.countDown) ? 1 : -1;
+                this.endVal = end + (up * this.options.smartEasingAmount);
+                this.duration = this.duration / 2;
+            }
+            else {
+                this.endVal = end;
+                this.finalEndVal = null;
+            }
+            if (this.finalEndVal) {
+                this.useEasing = false;
+            }
+            else {
+                this.useEasing = this.options.useEasing;
+            }
+        };
+        // start animation
+        CountUp.prototype.start = function (callback) {
+            if (this.error) {
+                return;
+            }
+            this.callback = callback;
+            if (this.duration > 0) {
+                this.determineDirectionAndSmartEasing();
+                this.paused = false;
+                this.rAF = requestAnimationFrame(this.count);
+            }
+            else {
+                this.printValue(this.endVal);
+            }
+        };
+        // pause/resume animation
+        CountUp.prototype.pauseResume = function () {
+            if (!this.paused) {
+                cancelAnimationFrame(this.rAF);
+            }
+            else {
+                this.startTime = null;
+                this.duration = this.remaining;
+                this.startVal = this.frameVal;
+                this.determineDirectionAndSmartEasing();
+                this.rAF = requestAnimationFrame(this.count);
+            }
+            this.paused = !this.paused;
+        };
+        // reset to startVal so animation can be run again
+        CountUp.prototype.reset = function () {
+            cancelAnimationFrame(this.rAF);
+            this.paused = true;
+            this.resetDuration();
+            this.startVal = this.validateValue(this.options.startVal);
+            this.frameVal = this.startVal;
+            this.printValue(this.startVal);
+        };
+        // pass a new endVal and start animation
+        CountUp.prototype.update = function (newEndVal) {
+            cancelAnimationFrame(this.rAF);
+            this.startTime = null;
+            this.endVal = this.validateValue(newEndVal);
+            if (this.endVal === this.frameVal) {
+                return;
+            }
+            this.startVal = this.frameVal;
+            if (!this.finalEndVal) {
+                this.resetDuration();
+            }
+            this.finalEndVal = null;
+            this.determineDirectionAndSmartEasing();
+            this.rAF = requestAnimationFrame(this.count);
+        };
+        CountUp.prototype.printValue = function (val) {
+            var result = this.formattingFn(val);
+            if (this.el.tagName === 'INPUT') {
+                var input = this.el;
+                input.value = result;
+            }
+            else if (this.el.tagName === 'text' || this.el.tagName === 'tspan') {
+                this.el.textContent = result;
+            }
+            else {
+                this.el.innerHTML = result;
+            }
+        };
+        CountUp.prototype.ensureNumber = function (n) {
+            return (typeof n === 'number' && !isNaN(n));
+        };
+        CountUp.prototype.validateValue = function (value) {
+            var newValue = Number(value);
+            if (!this.ensureNumber(newValue)) {
+                this.error = "[CountUp] invalid start or end value: " + value;
+                return null;
+            }
+            else {
+                return newValue;
+            }
+        };
+        CountUp.prototype.resetDuration = function () {
+            this.startTime = null;
+            this.duration = Number(this.options.duration) * 1000;
+            this.remaining = this.duration;
+        };
+        return CountUp;
+    }());
+
+    exports.CountUp = CountUp;
+
+    Object.defineProperty(exports, '__esModule', { value: true });
+
+}));
+;
+(function ($) {
+    $.fn.countup = function (params) {
+        // make sure dependency is present
+        if (typeof countUp.CountUp !== 'function') {
+            console.error('countUp.js is a required dependency of countUp-jquery.js.');
+            return;
+        }
+
+        var defaults = {
+            startVal: 0,
+            decimalPlaces: 0,
+            duration: 2,
+            useEasing: true,
+            useGrouping: true,
+            separator: ',',
+            decimal: '.',
+            prefix:  '',
+            suffix: '',
+            endVal:100,
+        };
+
+        if (typeof params === 'number') {
+            defaults.endVal = params;
+        }
+        else if (typeof params === 'object') {
+            $.extend(defaults, params);
+        }
+        else {
+            console.error('countUp-jquery requires its argument to be either an object or number');
+            return;
+        }
+
+        this.each(function (i, elem) {
+            var tt = new countUp.CountUp(elem, defaults.endVal, defaults);
+            tt.start();
+        });
+
+        return this;
+    };
+
+}(jQuery));;
+var isFirst = true;
+var SHARE_KEY = "";
+var ChooseLotteryIds = ["40022", "40023", "40024","40056"];
+var HappyHourConfig = { "is_open": false, "is_need_hand_hour": true, "is_hour_page": false,"match_url":"" };//happyhour活动是否开启,是否需要处理HappyHour,是否在HappyHour游戏页
+var lose_content = ["ONE STEP AWAY FROM WINNING", "ALMOST HIT THE GRAND PRIZE", "MORE LUCK NEXT TIME", "BETTER LUCK NEXT TIME"];
+
+$(document).on("pageshow",function() {
+    var title = $("header.head:first").attr("data-title");
+    getHeaderHtml(title);
+});
+
+$(document).on("pageinit", function () {
+    FRESH_HEADER = false;
+    LOGIN_SUCCESS_ACTION = function () {
+        getHeaderHtml("1|0_");
+        if (AfricaLottery.GuaGuaLe.config.key != "") {
+            var flag = true;
+            if (isChooseNumGame() && AfricaLottery.GuaGuaLe.config.select_num.length != AfricaLottery.GuaGuaLe.config.choose_num) {
+                flag = false;
+            }
+
+            if (flag) {
+                $("#btnBuy").trigger("click");
+                $(".new_btn").trigger("click");
+            }
+        }
+        //window.location.reload();
+    }
+    getBarrage();
+    $("#btnNew").on("click",function() {
+        AfricaLottery.GuaGuaLe.config.can_select = true;
+        $("#areatips").css("opacity", "1");
+        $("span[data-c-num]").text("-").removeClass(AfricaLottery.GuaGuaLe.config.winNumCls);
+        $("#selectTips").text("Selected 0/{0}".format(AfricaLottery.GuaGuaLe.config.choose_num));
+        $("#spTicketNo").text("00000000000000000000");
+        switchButton(1);
+        AfricaLottery.GuaGuaLe.drawSamplePic(1);
+        $("#selectMask").show();
+    });
+
+    $("#barrageBtn").on("click",function() {
+        sendBarrage();
+    });
+
+    $("#word").keyup(function() {
+        var len = $(this).val().length;
+        if (len > 50) {
+            $(this).val($(this).val().substring(0, 50));
+        }
+    });
+    $(".barrage_btn").click(function () {
+        if ($(this).hasClass("on")) {
+            $(this).addClass("off").removeClass('on');
+            $("#containerBarrage,#containerBarrageOwn").hide();
+            $(".input_barrage").hide();
+        }
+        else {
+            $(this).addClass("on").removeClass('off');
+            $("#containerBarrage,#containerBarrageOwn").show();
+            $(".input_barrage").show();
+        }
+    });
+    $(".input_barrage").click(function () {
+        $(".barrageBlock").show();
+        $(".normalBox").hide();
+        $(".barrageBox").show();
+        $("#word").focus();
+        $(".btn_box").css("bottom", 0);
+    });
+
+    $(".barrageBlock").on("click",function() {
+        $(this).hide();
+        $(".barrageBox").hide();
+        $(".normalBox").show();
+        $(".btn_box").css("bottom", "10px");
+    });
+
+    $("#divSelectNum,#btnSelect,#selectMask").click(function () {
+        if (AfricaLottery.GuaGuaLe.config.can_select && !AfricaLottery.GuaGuaLe.config.is_buy) {
+            var spans = $("span[data-c-num]");
+            $("#card_area span.grid_ball").removeClass("sel");
+            var selectNums = [];
+            $.each(spans, function(i, item) {
+                var $item = $(item);
+                if ($item.text() !== "-") {
+                    selectNums.push($item.text());
+                    $("#card_area li span[data-num='" + $item.text() + "']").addClass("sel");
+                }
+            });
+
+            if (!selectNums.length && AfricaLottery.GuaGuaLe.config.select_num.length) {
+                $.each(AfricaLottery.GuaGuaLe.config.select_num, function (i, item) {
+                    $("#card_area li span[data-num='" + item + "']").addClass("sel");
+                });
+                $("#selectTips").text("Selected {0}/{1}".format(AfricaLottery.GuaGuaLe.config.select_num.length,
+                    AfricaLottery.GuaGuaLe.config.choose_num));
+            }
+
+            $(".card_layerbox").show();
+        }
+    });
+    $(".close").click(function() {
+        $(".card_layerbox").hide();
+    });
+
+    $(".win_layre").on("click", function () {
+        $(this).hide();
+    });
+    $(".fail_layre").on("click", function () {
+        $(this).hide();
+    });
+    $(".fail_btn").on("click", function() {
+        $(".fail_layre").hide();
+    });
+    $("a.sure").on("click",function() {
+        var spans = $("#card_area span.sel");
+        var numc = $("span[data-c-num]");
+        $("span[data-c-num]").text("-");
+        $.each(spans, function(i, item) {
+            $(numc[i]).text($(item).text());
+        });
+        if (!AfricaLottery.GuaGuaLe.config.is_buy) {
+            if (spans.length == AfricaLottery.GuaGuaLe.config.choose_num) {
+                AfricaLottery.GuaGuaLe.config.is_selected = true;
+                switchButton(2);
+            } else {
+                AfricaLottery.GuaGuaLe.config.is_selected = false;
+                switchButton(1);
+            }
+            
+        }
+        
+        $(".card_layerbox").hide();
+    });
+
+    $("#card_area").on("click", "span.grid_ball", function () {
+        var spans = $("#card_area span.sel");
+        if ($(this).hasClass("sel")) {
+            $(this).toggleClass("sel");
+        } else {
+            if (spans.length < AfricaLottery.GuaGuaLe.config.choose_num) {
+                $(this).toggleClass("sel");
+            }
+        }
+        
+        spans = $("#card_area span.sel");
+        $("#selectTips").text("Selected {0}/{1}".format(spans.length, AfricaLottery.GuaGuaLe.config.choose_num));
+
+    });
+    
+    $(".log_reg_boxs").html($("#helpcontainer").html());
+    $(".new_btn,#btnNew,#btnBuy").on("click", function () {
+        if ($(this).attr("id")) {
+            $(".share_btn_half").hide();
+            $(".new_btn").removeClass("new_btn_half").css("display", "block");
+        }
+        //$(".input_barrage").hide();
+        //$(".barrage_btn").removeClass("on").addClass("off");
+        $("#shareBox").hide();
+        $(".share_btn_half").hide();
+        $(".barrageBtnBox").show();
+        if (!isFirst) {
+            //if (AfricaLottery.GuaGuaLe.config.key != "") {
+            //    var url = window.location.href.toString();
+            //    window.location.href = url.substring(0, url.indexOf("?"));
+            //    return;
+            //}
+            ModalHelper.afterOpen();
+            $(".main_box").animate({ top: '-500px' }, 200, function () {
+                $(".mess").hide();
+                $("#energy_ads").show();
+
+                if ($.inArray(AfricaLottery.GuaGuaLe.config.lotteryId, ChooseLotteryIds) == -1) {
+                    $("#redux").eraser("reset");
+                    //if (AfricaLottery.GuaGuaLe.config.is_buy) {
+                    //    $("#redux").eraser({ canScrape: true });
+                    //}
+                } else {
+                    $("#selectMask").show();
+                }
+                
+                setTimeout(function () {
+                    $(".main_box").hide();
+                }, 80);
+
+
+            }).animate({ top: "1000px" }, function () {
+                $(".main_box").show();
+                setTimeout(function () {
+
+                    $(".main_box").animate({ top: '0' }, 10, function () {
+                        ModalHelper.beforeClose();
+                        $(".main_box").css({ 'transform': 'scale(1)', 'transform-origin': '50% 0' });
+                        if ($(this).attr("id") == "btnBuy" || $(this).hasClass("new_btn")) {
+                            AfricaLottery.GuaGuaLe.buy();
+                        }
+                        
+                    });
+                }, 10);
+            });
+            var id = $(this).attr("id");
+            if (id) {
+                if (id == "btnBuy") {
+                    AfricaLottery.GuaGuaLe.config.can_select = false;
+                } else {
+                    AfricaLottery.GuaGuaLe.config.can_select = true;
+                    isFirst = true;
+                }
+                
+            }
+            
+            AfricaLottery.GuaGuaLe.config.is_buy = false;
+            switchButton(1);
+        }
+
+        if ($(this).attr("id") == "btnBuy" || $(this).hasClass("new_btn")) {
+            AfricaLottery.GuaGuaLe.buy();
+        }
+        //$(".main_box").animate({ 'top': "0", 'transform': 'scale(1)', 'transform-origin': '50% 0' }, "slow", function () {
+        //    AfricaLottery.GuaGuaLe.buy();
+        //    });
+    });
+
+    $(".check_btn,#btnCheck,#divCheck").on("click", function () {
+       
+        if (isChooseNumGame()) {
+            AfricaLottery.GuaGuaLe.config.can_select = true;
+            AfricaLottery.GuaGuaLe.config.is_buy = false;
+        } else {
+            $("#redux").eraser("clear");
+        }
+        
+        //if (AfricaLottery.GuaGuaLe.config.is_buy) {
+        //    $("#redux").eraser({canScrape:true});
+        //}
+    });
+
+    $(".close_btn").on("click", function () {
+        $(".scratch_mask").hide();
+        $(".layerbox1").hide();
+        $(".learn_box").hide();
+        isGua = true;
+        AfricaLottery.GuaGuaLe.config.passTime = 0;
+    });
+
+    $(".scratch_mask,.layerbox1").on("click", function () {
+        $(".scratch_mask").hide();
+        $(".layerbox1").hide();
+        $(".learn_box").hide();
+        isGua = true;
+        AfricaLottery.GuaGuaLe.config.passTime = 0;
+    });
+
+    $("#btn_login_close").on("click", function () {
+        $("#divLogin").hide();
+    });
+
+    $(".num_delete").on("click",function() {
+        $("#card_area span.sel").removeClass("sel");
+    });
+
+    $(".num_random").on("click",function() {
+        var tempArray = machineChoose();
+        $("#card_area span.sel").removeClass("sel");
+        $.each(tempArray, function (i, item) {
+            $("#card_area span[data-num='" + item + "']").trigger("click");
+        });
+    });
+
+    if (isChooseNumGame() && AfricaLottery.GuaGuaLe.config.key != "") {
+        if (AfricaLottery.GuaGuaLe.config.select_num.length == AfricaLottery.GuaGuaLe.config.choose_num) {
+            $("#btnNew").click();
+            $("#selectTips").text("Selected {0}/{1}".format(AfricaLottery.GuaGuaLe.config.select_num.length,
+                AfricaLottery.GuaGuaLe.config.choose_num));
+            $.each($("span[data-c-num]"), function (i, item) {
+                $(item).text(AfricaLottery.GuaGuaLe.config.select_num[i]);
+            });
+            switchButton(3);
+        }
+        
+    }
+
+    if (AfricaLottery.GuaGuaLe.config.key != "") {
+        var flag = true;
+        if (isChooseNumGame()) {
+            if (!AfricaLottery.GuaGuaLe.config.select_num.length) {
+                flag = false;
+            }
+        }
+        if (flag) {
+            $(".new_btn").hide();
+            setTimeout(function () {
+                $(".new_btn").trigger("click");
+                $(".new_btns").trigger("click");
+                $("#btnBuy").trigger("click");
+            }, 300);
+        }
+        
+
+    }
+
+    $(".share_btn_half").on("click",function() {
+        $("#shareBox").show();
+    });
+    
+});
+
+
+function machineChoose() {
+    var source = getMachineChooseSource();
+    var max = source.length - 1;
+    var min = 0;
+    var tempArray = [];
+    var cc = 0;
+    while (cc < AfricaLottery.GuaGuaLe.config.choose_num) {
+        var index = parseInt(Math.random() * (max - min + 1) + min, 10);
+        var num = source[index];
+        if ($.inArray(num, tempArray) === -1) {
+            tempArray.push(num);
+            cc++;
+        }
+    }
+
+
+    return tempArray;
+}
+
+function getMachineChooseSource() {
+    var result = [];
+    
+    for (var i = AfricaLottery.GuaGuaLe.config.choose_num_config[0]; i <= AfricaLottery.GuaGuaLe.config.choose_num_config[1]; i++) {
+        result.push("{0}".format(i.toString().lpad(0)));
+    }
+
+    return result;
+}
+
+function isChooseNumGame() {
+    return $.inArray(AfricaLottery.GuaGuaLe.config.lotteryId, ChooseLotteryIds) > -1;
+}
+
+
+function reset() {
+    $("#canvas").attr("width", $("#imgbg").width());
+    $("#canvas").attr("height", $("#imgbg").height());
+    //var flag = false;
+    //if (AfricaLottery.GuaGuaLe.config.key != "") {
+    //    if (isChooseNumGame()) {
+    //        if (AfricaLottery.GuaGuaLe.config.select_num.length == AfricaLottery.GuaGuaLe.config.choose_num) {
+    //            flag = true;
+    //        } else {
+    //            AfricaLottery.GuaGuaLe.config.key = "";
+    //        }
+    //    } else {
+    //        flag = true;
+    //    }
+    //}
+    //if (!flag) {
+        AfricaLottery.GuaGuaLe.clear();
+        AfricaLottery.GuaGuaLe.init(true);
+    //} else {
+    //    $("#redux").show();
+    //    $('#redux').eraser({
+    //        size: 40, //设置橡皮擦大小
+    //        completeRatio: .8, //设置擦除面积比例,
+    //        preRatio: 0.1,
+    //        completeFunction: callBack //大于擦除面积比例触发函数
+    //    });
+    //    $("#redux").eraser("reset");
+    //}
+    
+    
+    if (HappyHourConfig.is_hour_page) {
+        $.ajax({
+            url: GLOBAL_LANGUEAGE + "/games/getHappyHourConfig",
+            type: "POST",
+            data: {
+                "lottery_id": AfricaLottery.GuaGuaLe.config.lotteryId
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.status == 1) {
+                    $(".countDown").attr("data-stime", data.start_time).attr("data-etime", data.end_time);
+                    var now = moment.utc();
+                    var startTime = moment.utc(data.start_time);
+                    var endTime = moment.utc(data.end_time);
+                    var status = -1;
+                    if (now < startTime) {
+                        status = 0;
+                    }else if (now >= startTime && now < endTime) {
+                        status = 1;
+                    }
+
+                    $(".countDown").attr('data-status', status);
+                    countdown();
+                }
+            },
+            error: function () {
+
+            }
+
+        });
+    }
+    //if (!isFirst) {
+    //    $("#redex").eraser("reset", { w: $("#canvas").width(), h: $("#canvas").height() });
+    //}
+    
+}
+
+function callBack() {
+    $(".main_box").animate({}, function () {
+        $(".main_box").css({ 'transform': 'scale(0.75)', 'transform-origin': '50% 0' });
+    });
+    if (AfricaLottery.GuaGuaLe.config.win_amount > 0) {
+        $(".mess span").text("WINNING " + AfricaLottery.GuaGuaLe.config.win_amount_str);
+            //"WINNER " + AfricaLottery.GuaGuaLe.config.unit + " " + AfricaLottery.GuaGuaLe.config.win_amount.formatMoney(2,""));
+    } else {
+        var index = randomNum(1, 4);
+        var loseMsg = lose_content[index - 1];
+        $(".mess span").text(loseMsg);
+        $("#lose_msg,#lose_msg_blur").text(loseMsg);
+        $(".fail_layre").show();
+    }
+    $(".mess").show();
+    $("#energy_ads").hide();
+    
+    
+    showPrizeLevelAndSwitchButton();
+    $(".new_btn,.new_new_btn[id!='btnBuy']").addClass("new_btn_half").css("display", "inline-block");
+    $(".barrageBtnBox").hide();
+    //$(".barrage_btn").removeClass("on").addClass("off");
+    //$(".input_barrage").hide();
+    $(".share_btn_half").css("display", "inline-block");
+    $(".check_btn").hide();
+    if (!isChooseNumGame()) {
+        if (AfricaLottery.GuaGuaLe.config.win_amount > 0) {
+            AfricaLottery.GuaGuaLe.playSound("award");
+        } else {
+            AfricaLottery.GuaGuaLe.playSound("click");
+        }
+
+        var spans = $("span[data-c-num]");
+        if (spans.length) {
+            $.each(spans, function (i, item) {
+                var $item = $(item);
+                var array = AfricaLottery.GuaGuaLe.config.numbers.filter(function (obj) {
+                    return obj.text == $item.text();
+                });
+
+                if (array.length) {
+                    $item.addClass(AfricaLottery.GuaGuaLe.config.winNumCls);
+                }
+            });
+        }
+        AfricaLottery.GuaGuaLe.clear();
+        AfricaLottery.GuaGuaLe.init(true);
+    }
+    
+    
+    AfricaLottery.GuaGuaLe.config.can_select = false;
+    switchButton(0);
+    if (AfricaLottery.GuaGuaLe.disablePlusBtn) {
+        AfricaLottery.GuaGuaLe.disablePlusBtn(true);
+    }
+    
+}
+
+function switchButton(type) {
+    switch (type) {
+        case 0:
+        $("#btnNew").show();
+        $("#btnBuy,#btnSelect,#btnCheck").hide();
+        break;
+    case 1:
+        $("#btnSelect").show();
+        $("#btnBuy,#btnNew,#btnCheck").hide();
+        break;
+        case 2:
+        $("#btnBuy").show();
+        $("#btnSelect,#btnNew,#btnCheck").hide();
+        break;
+    default:
+        $("#btnCheck").show();
+        $("#btnSelect,#btnNew,#btnBuy").hide();
+        break;
+    }
+}
+
+function countdown() {
+
+    var timeSpans = $("span[data-status='0'],span[data-status='1']");
+    $.each(timeSpans,
+        function (i, item) {
+            var time;
+            var $span = $(item);
+            var status = $span.attr("data-status");
+            var startTime = moment.utc($span.attr("data-stime"));
+            var endTime = moment.utc($span.attr("data-etime"));
+            if (status == "0") {
+                var stime = $span.attr("data-stime");
+                time = moment.utc(stime);
+            } else if (status == "1") {
+                time = moment.utc($span.attr("data-etime"));
+            }
+            if (time) {
+                $(this).countdown(time).on('update.countdown',
+                    function (event) {
+                        var days = Math.floor((time - moment().utc()) / 1000 / (24 * 60 * 60));
+                        var hours = Math.floor((time - moment().utc()) / 1000 / (60 * 60));
+                        var minutes = Math.floor((time - moment().utc()) / 1000 / 60);
+                        if (moment.utc() >= startTime && moment.utc() < endTime) {
+                            $(this).siblings("span").hide();
+                        }
+                        status = $(this).attr("data-status");
+                        var str = "Start in ";
+                        if (status == "1") {
+                            str = "Closed in ";
+                        }
+                        var format = "{0}%MM %SS".format(str);
+                        if (days >= 1) {
+                            format = '{0}%DD %HH'.format(str);
+                        } else if (days == 0 && hours >= 1) {
+                            format = '{0}%HH %MM'.format(str);
+                        } else if (days == 0 && hours == 0 && minutes > 0) {
+                            format = '{0}%MM %SS'.format(str);
+                        } else if (days == 0 && hours == 0 && minutes == 0) {
+                            format = '{0}%SS'.format(str);
+                        }
+                        $(this).html(event.strftime(format));
+                    }).on('finish.countdown',
+                    function (event) {
+                        status = $(this).attr("data-status");
+                        if (status == "0") {
+                            $(this).attr("data-status", "1");
+                            time = moment.utc($(this).attr("data-etime"));
+                            $(this).countdown(time);
+                        } else {
+                            $(this).remove();
+                        }
+                    });
+            }
+
+        });
+}
+
+function getHeaderHtml(title) {
+    $.get(GLOBAL_LANGUEAGE + "/home/headernew?title=" + title).done(function(result) {
+        $("div[data-role='header']").html(result);
+        $(".log_reg_boxs").html($("#helpcontainer").html());
+        $("img.country_img").attr("src","/images/country/" + GLOBAL_COUNTRY + ".png");
+    });
+}
+
+
+function showPrizeLevelAndSwitchButton() {
+    if (AfricaLottery.GuaGuaLe.config.numbers.length &&
+        AfricaLottery.GuaGuaLe.config.moneyDefine &&
+        AfricaLottery.GuaGuaLe.config.moneyDefine.length > 0) {
+        var prizeItem = JSLINQ(AfricaLottery.GuaGuaLe.config.numbers).First(function(item) {
+            return item.is_award === true;
+        });
+
+        if (prizeItem) {
+            $("div[data-level='" + prizeItem.text + "']").addClass("awarded");
+            $("#spAwardPrize").text(AfricaLottery.GuaGuaLe.config.win_amount);
+            $(".win_layre").show();
+            var options = {
+                duration: 3,
+                decimalPlaces:2,
+                prefix: '',
+                endVal: AfricaLottery.GuaGuaLe.config.win_amount,
+            };
+            $("#spAwardPrize,#spAwardPrize_blur").countup(options);
+
+            
+
+            //$('#sp_prz_monty').countUp({
+            //    delay: 10,
+            //    time: 2000
+            //});
+        }
+    } else {
+        if (AfricaLottery.GuaGuaLe.config.win_amount > 0) {
+            $(".win_layre").show();
+            $("#spAwardPrize").text(AfricaLottery.GuaGuaLe.config.win_amount);
+            var options = {
+                duration: 3,
+                decimalPlaces: 2,
+                prefix: '',
+                endVal: AfricaLottery.GuaGuaLe.config.win_amount,
+            };
+            $("#spAwardPrize,#spAwardPrize_blur").countup(options);
+        }
+    }
+
+
+    $("#divNew").show();
+    $("#divCheck").hide();
+}
+
+
+var share_url = "{0}{1}/membercenter/home/luckydetail?key={2}";
+function twitter() {
+    var textContent = AfricaLottery.GuaGuaLe.config.share_content;
+    $.post(GLOBAL_LANGUEAGE + "/behaviour/", { type: "event", category: "LuckDetail", action: "share", label: "twitter" }, function () { });
+    var urlObj = $.mobile.path.parseLocation(window.location.href.toString());
+    var url = encodeURIComponent(share_url.format(urlObj.domain, GLOBAL_LANGUEAGE, SHARE_KEY));
+    window.open("https://twitter.com/share?url=" + url + "&text=" + textContent);
+}
+
+function facebook() {
+    var textContent = AfricaLottery.GuaGuaLe.config.share_content;
+    $.post(GLOBAL_LANGUEAGE + "/behaviour/", { type: "event", category: "LuckDetail", action: "share", label: "facebook" }, function () { });
+    var urlObj = $.mobile.path.parseLocation(window.location.href.toString());
+    var url = encodeURIComponent(share_url.format(urlObj.domain, GLOBAL_LANGUEAGE, SHARE_KEY));
+    window.open("https://www.facebook.com/sharer.php?u=" + url);
+}
+
+function whatsapp() {
+    var textContent = AfricaLottery.GuaGuaLe.config.share_content;
+    $.post(GLOBAL_LANGUEAGE + "/behaviour/", { type: "event", category: "LuckDetail", action: "share", label: "whatsapp" }, function () { });
+    var urlObj = $.mobile.path.parseLocation(window.location.href.toString());
+    var url = encodeURIComponent(share_url.format(urlObj.domain, GLOBAL_LANGUEAGE, SHARE_KEY));
+    window.open("whatsapp://send?text=" + textContent + url);
+}
+
+function telegram() {
+    var textContent = AfricaLottery.GuaGuaLe.config.share_content;
+    $.post(GLOBAL_LANGUEAGE + "/behaviour/", { type: "event", category: "LuckDetail", action: "share", label: "telegram" }, function () { });
+    var urlObj = $.mobile.path.parseLocation(window.location.href.toString());
+    var url = encodeURIComponent(share_url.format(urlObj.domain, GLOBAL_LANGUEAGE, SHARE_KEY));
+    window.open("https://t.me/share/url?url=" + url + "&text=" + textContent);
+}
+
+window.onload = function () {
+    reset();
+
+    //AfricaLottery.GuaGuaLe.init();
+};
+window.onresize = reset;
+
+function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+function randomNum(min, max) {
+    switch (arguments.length) {
+    case 1:
+        return parseInt(Math.random() * min + 1, 10);
+        break;
+    case 2:
+        return parseInt(Math.random() * (max - min + 1) + min, 10);
+        break;
+    default:
+        return 0;
+        break;
+    }
+}
+
+function getBarrage() {
+    $.ajax({
+        url: GLOBAL_LANGUEAGE + "/games/getbarrage",
+        type: "post",
+        dataType:"json",
+        data: { "lottery_id": AfricaLottery.GuaGuaLe.config.lotteryId, "lottery_type": 1, "r": Math.random() },
+        success: function (result) {
+            var data = [];
+            $.each(result.data,function(i, item) {
+                data.push({ text: item.content, color: item.is_own ? "ownColor" :"" });
+            });
+            var barrage = new Barrage('.barrage-container', {
+                rows: 2,
+                initialComments: data,
+                opacity: 1
+            });
+        },
+        error:function() {
+
+        }
+    });
+}
+
+function sendBarrage() {
+    var content = $("#word").val();
+    if (content == "" || $.trim(content) == "") {
+        africaDialog.alert.setTitle("tips").setContent("Please enter word").show();
+        return;
+    }
+
+    $.ajax({
+        url: GLOBAL_LANGUEAGE + "/games/postbarrage",
+        type: "post",
+        dataType: "json",
+        data: { "content": content, "lottery_id": AfricaLottery.GuaGuaLe.config.lotteryId, "lottery_type": 1, r: Math.random() },
+        beforeSend:function() {
+            africaDialog.loading.show();
+        },
+        success: function (result) {
+            if (result.code == 1) {
+                var barrage = new Barrage('.barrage-container-own', {
+                    rows: 1,
+                    opacity: 1
+                });
+                barrage.addComment({ text: result.content, color: "ownColor" });
+
+                $("#word").val('');
+                $(".normalBox").show();
+                $(".barrageBox").hide();
+                $("#word").blur();
+                $(".btn_box").css("bottom", 10);
+                $(".barrageBlock").hide();
+            }else if (result.code == -1) {
+                commonLogin(true);
+            } else {
+                africaDialog.alert.setTitle("tips").setContent(result.message).show();
+            }
+            
+        },
+        complete:function() {
+            africaDialog.loading.hide();
+        }
+    });
+};
+(function(window, $) {
+
+    class Barrage {
+        constructor(container, options) {
+            this.container = typeof container == 'string' ? $(container) : container;
+            if(options.opacity) {
+                this.setOpacity(options.opacity);
+            }
+            this.comments = options.initialComments || [];
+            this.rows = options.rows || 3;
+            this.lineHeight = 34;
+            this.marginLeft = 20;
+            this.latestComments = [];
+            this.rightestItem = null;
+            this.enabled = false;
+            this.num = 50;
+            this.speed = options.speed || 1500;
+            if(options.autoStart !== false) {  //default auto start
+                this.enableBarrage();
+                this.enabled = true;
+            }
+        }
+        setOpacity(opacity) {
+            this.container.css({'opacity': opacity});
+        }
+        addCycleListener() {
+            // this.cycleListener = setInterval(() => {
+            //     var pos = this.rightestItem.position();
+            //     if(pos.left <= (0 - this.rightestItem.width())) {
+            //         this.latestComments = [];
+            //         this.initialBarrage();
+            //     }
+            // }, 1000);
+            return this.cycleListener;
+        }
+        clearCycleListener() {
+            if(this.cycleListener) {
+                clearInterval(this.cycleListener);
+                this.cycleListener = null;
+            }
+        }
+        initialBarrage() {
+            this.container.empty();
+            this.comments.map((item) => {
+                this.upWall(item);
+            });
+        }
+        upWall(item) {
+            var pos = this.getPosition();
+            var barrageItem = $('<span>').addClass('barrage-item ' + (item.color || '')).css({
+                left: pos.left + 'px',
+                top: pos.top + 'px'
+            }).text(item.text).appendTo(this.container);
+
+            if(this.rightestItem == null || ((pos.left + barrageItem.innerWidth()+this.num) > (this.rightestItem.position().left + this.rightestItem.innerWidth()+this.num))) {
+                this.rightestItem = barrageItem;
+            }
+            if(this.latestComments.length >= (this.rows * 2)) {
+                this.latestComments.shift();
+            }
+            this.latestComments.push(barrageItem);
+            barrageItem.animate({
+                left: 0 - Math.ceil(barrageItem.innerWidth()+this.num)
+            }, ((barrageItem.position().left + barrageItem.innerWidth()+this.num)/100) * this.speed, 'linear');
+        }
+        getPosition() {
+            var containerWidth = $(this.container).innerWidth()+this.num;
+            if(this.latestComments.length == 0) {
+                return {
+                    top: 0,
+                    left: containerWidth
+                };
+            }
+            var lastItem = this.latestComments[this.latestComments.length - 1],
+                posOfLastItem = {
+                    left: Number(lastItem.css('left').replace('px', '')),
+                    top: Number(lastItem.css('top').replace('px', ''))
+                },
+                posForNewItem = {};
+            if(posOfLastItem.top == (this.lineHeight * (this.rows - 1))) {
+                posForNewItem.top = 0;
+            } else {
+                posForNewItem.top = posOfLastItem.top + this.lineHeight;
+            }
+            if(this.latestComments.length < this.rows) {
+                posForNewItem.left = (containerWidth + Math.ceil((Math.random() * 100)));
+            } else {
+                var previousItem = this.latestComments[this.latestComments.length - this.rows],
+                    startLeft = previousItem.position().left + previousItem.innerWidth()+this.num + this.marginLeft + Math.ceil(Math.random() * 50);
+                posForNewItem.left = startLeft < containerWidth ? containerWidth : startLeft;
+            }
+            return posForNewItem;
+        }
+        toggleBarrage() {
+            this.enabled = !this.enabled;
+            if(this.enabled) {
+                this.enableBarrage();
+            } else {
+                this.disableBarrage();
+            }
+        }
+        enableBarrage() {
+            this.initialBarrage();
+            this.addCycleListener();
+        }
+        disableBarrage() {
+            this.container.empty();
+            this.latestComments = [];
+            this.rightestItem = null;
+            this.clearCycleListener();
+        }
+        addComment(obj) {
+            var comment = {
+                id: this.comments.length + 1,
+                text: obj.text,
+                color: obj.color
+            };
+            this.comments.push(comment);
+            this.upWall(comment);
+        }
+    };
+
+    window.Barrage = Barrage;
+
+})(window, jQuery);
+;
